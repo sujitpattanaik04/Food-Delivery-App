@@ -11,7 +11,7 @@ const loginUser = async (req, res) => {
 
     const options = {
       maxAge: process.env.LOGIN_EXPIRES_IN,
-      httpOnly: false,
+      httpOnly: true,
     };
 
     res.cookie("authToken", token, options);

@@ -27,7 +27,7 @@ const loginUser = async (userData) => {
     throw new Error("User with the given email couldn't found !!");
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await user.comparePassword(password, user.password);
 
   if (!isPasswordValid) {
     throw new Error("Invalid Credentials !!");
@@ -119,7 +119,10 @@ const changePassword = async (req) => {
   const { oldPassword, newPassword, confirmNewPassword } = req.body;
   const user = req.user;
 
-  const isPasswordValid = await user.comparePassword();
+  const isPasswordValid = await user.comparePassword(
+    oldPassword,
+    user.password
+  );
 
   if (!isPasswordValid) {
     throw new Error("Please provide valid old password!");
