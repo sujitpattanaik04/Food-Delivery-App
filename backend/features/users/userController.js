@@ -2,12 +2,20 @@ const { registerUserService, deleteUserService } = require("./userService.js");
 
 const registerUser = async (req, res) => {
   try {
-    const newUser = await registerUserService(req.body);
+    const { user: newUser, token } = await registerUserService(req.body);
+
     delete newUser.dataValues.password;
     delete newUser.dataValues.deletedAt;
     delete newUser.dataValues.passwordChangedAt;
     delete newUser.dataValues.passwordResetToken;
     delete newUser.dataValues.passwordResetTokenExpires;
+
+    const options = {
+      maxAge: process.env.LOGIN_EXPIRES_IN,
+      httpOnly: true,
+    };
+
+    res.cookie("authToken", token, options);
 
     res.status(201).json({
       status: "success",

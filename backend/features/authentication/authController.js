@@ -7,7 +7,7 @@ const {
 
 const loginUser = async (req, res) => {
   try {
-    const token = await loginUserService(req.body);
+    const { user, token } = await loginUserService(req.body);
 
     const options = {
       maxAge: process.env.LOGIN_EXPIRES_IN,
@@ -20,7 +20,7 @@ const loginUser = async (req, res) => {
       status: "success",
       requestedAt: req.requestedAt,
       message: "You have logged in successfully!",
-      token,
+      data: user,
     });
   } catch (error) {
     res.status(400).json({

@@ -13,7 +13,9 @@ const loginUser = async (userData) => {
 
   role = await Role.findOne({
     where: {
-      roleName: role,
+      roleName: {
+        [Op.iLike]: role,
+      },
     },
   });
 
@@ -44,7 +46,10 @@ const loginUser = async (userData) => {
     throw new Error("You have entered incorrect role !!");
   }
 
-  return signToken(user.uuid);
+  const token = signToken(user.uuid);
+  console.log(100);
+
+  return { user, token };
 };
 
 const forgotPassword = async (req) => {

@@ -9,9 +9,16 @@ const authRoute = require("./features/authentication/authApi.js");
 
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:8080",
+  })
+);
 app.use(express.json());
 app.use(
   morgan(customFormat, {

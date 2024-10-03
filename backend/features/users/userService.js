@@ -1,8 +1,7 @@
 const { registerUser, deleteUser } = require("./userRepository.js");
 
 const registerUserService = async (newUser) => {
-  const res = await registerUser(newUser);
-  return res;
+  return await registerUser(newUser);
 };
 
 const deleteUserService = async (userId) => {

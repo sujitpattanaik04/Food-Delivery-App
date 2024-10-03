@@ -1,0 +1,30 @@
+<template>
+  <the-header></the-header>
+  <h1>Hello {{ username }}</h1>
+</template>
+
+<script>
+import TheHeader from "../components/UI/TheHeader.vue";
+
+export default {
+  components: {
+    TheHeader,
+  },
+  data() {
+    return {
+      username: "",
+    };
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.username = user.username;
+  },
+};
+</script>
+
+<style scoped>
+h1 {
+  position: absolute;
+  margin-top: 50px;
+}
+</style>

@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const { db } = require("../../models/connection.js");
 const validatePassword = require("../../utils/passwordValidator.js");
+const signToken = require("../../utils/signToken.js");
 
 const User = db.User;
 const Role = db.Role;
@@ -15,7 +16,11 @@ const registerUser = async (newUser) => {
 
   //FINDING EXISTING ROLE FROM ROLE TABLE
   const enteredRole = await Role.findOne({
-    where: { roleName: role },
+    where: {
+      roleName: {
+        [Op.iLike]: role,
+      },
+    },
   });
 
   //CHECK PASSWORD FORMAT
@@ -68,7 +73,9 @@ const registerUser = async (newUser) => {
     role_uuid: enteredRole.uuid,
   });
 
-  return user;
+  const token = signToken(user.uuid);
+
+  return { user, token };
 };
 
 // const deleteUser = async (userId) => {
@@ -83,6 +90,7 @@ const registerUser = async (newUser) => {
 // };
 
 const deleteUser = async (userId) => {
+  console.log(newUser);
   await User.destroy({
     where: { uuid: userId },
   });
