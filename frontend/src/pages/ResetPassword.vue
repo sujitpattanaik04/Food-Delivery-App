@@ -37,7 +37,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      password: "",
+      newPassword: "",
       isPasswordVisible: false,
       passwordError: "",
     };
@@ -47,7 +47,7 @@ export default {
       const passwordPattern =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
       this.passwordError =
-        !passwordPattern.test(this.password) && this.password
+        !passwordPattern.test(this.newPassword) && this.newPassword
           ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
           : "";
     },
@@ -58,21 +58,18 @@ export default {
       try {
         if (!this.passwordError) {
           const payload = {
-            password: this.password,
+            newPassword: this.newPassword,
           };
 
           const response = await axios.post(
-            "http://127.0.0.1:3000/api/v1/auth/reset-password/:token",
+            `http://127.0.0.1:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
             payload
           );
 
-          console.log(response.data.data);
-
-          localStorage.setItem("user", JSON.stringify(response.data.data));
-          this.$router.replace("/dashboard");
+          this.$router.replace("/login");
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         alert(error.response.data.message);
       }
     },

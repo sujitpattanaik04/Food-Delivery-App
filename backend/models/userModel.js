@@ -100,6 +100,9 @@ module.exports = (connectDB) => {
       .digest("hex");
 
     this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    console.log(resetToken);
+
     return resetToken;
   };
 

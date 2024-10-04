@@ -56,18 +56,19 @@ const loginUser = async (userData) => {
 const forgotPassword = async (req) => {
   const { email } = req.body;
 
+  console.log(email);
+
   const user = await User.findOne({
     where: {
       email,
     },
   });
 
-  if (!user) throw new Error("the given email is not found!");
+  if (!user) throw new Error("User the given email is not found!");
 
   const resetToken = await user.createResetPasswordToken();
 
   await user.save();
-  console.log(123);
 
   const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -79,24 +80,14 @@ const forgotPassword = async (req) => {
 
   const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
 
-  let text = `<p>This is your passwod reset link:</p> <a>${resetUrl}</a>`;
-  console.log(1234);
-
-  await transporter.sendMail({
-    to: user.email,
-    subject: "Password Reset Link",
-    html: text,
-    link: `resetUrl`,
-  });
-  console.log(12345);
-
-  const msg = `Hello ${user.email}, \nWe have received a password reset request. Please use below link to reset your password. Which is valid only for 10 minutes.\n${resetUrl}`;
+  const html = `<pre>Hello ${user.email},\n      We have received a password reset request. Please use given link to reset your password. Which is valid only for 10 minutes. <a href=${resetUrl}>Password Reset Link</a> </pre>  `;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Password change request received.",
-      message: msg,
+    transporter.sendMail({
+      to: user.email,
+      subject: "Reset Password Request Received.",
+      html,
+      link: `${resetUrl}`,
     });
   } catch (error) {
     user.passwordResetToken = undefined;
@@ -105,15 +96,31 @@ const forgotPassword = async (req) => {
 
     throw new Error("Something went wrong in sending email!");
   }
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Reset Password Request Received.",
+      message: html,
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpires = undefined;
+    user.save();
+
+    throw new Error("Something went wrong in sending email!");
+  }
+  return;
 };
 
 const resetPassword = async (req) => {
-  const { newPassword, confirmNewPassword } = req.body;
+  const { newPassword } = req.body;
 
   const token = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
+  console.log(token);
 
   const user = await User.findOne({
     where: {
@@ -121,13 +128,11 @@ const resetPassword = async (req) => {
       passwordResetTokenExpires: { [Op.gt]: Date.now() },
     },
   });
+  console.log(user);
 
   if (!user) {
     throw new Error("Token is invalid or has expired!");
   }
-
-  if (newPassword !== confirmNewPassword)
-    throw new Error("New Password & Confirm Password must be same!");
 
   user.password = newPassword;
   user.passwordResetToken = null;
@@ -136,7 +141,9 @@ const resetPassword = async (req) => {
 
   await user.save();
 
-  return signToken(user.uuid);
+  return {
+    message: "password changed",
+  };
 };
 
 const changePassword = async (req) => {

@@ -51,18 +51,10 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const token = await resetPasswordService(req);
-
-    const options = {
-      maxAge: process.env.LOGIN_EXPIRES_IN,
-      httpOnly: true,
-    };
-
-    res.cookie("authToken", token, options);
+    await resetPasswordService(req);
 
     res.status(200).json({
       status: "success",
-      token,
       requestedAt: req.requestedAt,
       message: "Password reset successfully",
     });
@@ -70,7 +62,7 @@ const resetPassword = async (req, res) => {
     res.status(400).json({
       status: "failed",
       requestedAt: req.requestedAt,
-      message: error.message,
+      message: error,
     });
   }
 };

@@ -15,8 +15,7 @@ import ResetPassword from "./pages/ResetPassword.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    // { path: "/", redirect: "/coaches" },
-
+    { path: "/", redirect: "/signup" },
     { path: "/signup", component: SignUp },
     { path: "/login", component: LogIn },
     { path: "/dashboard", component: DashBoard },

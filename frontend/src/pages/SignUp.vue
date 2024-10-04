@@ -79,7 +79,9 @@
       <div class="row button">
         <input type="submit" value="Signup" />
       </div>
-      <div class="signup-link">Already a member? <a href="#">Login now</a></div>
+      <div class="signup-link">
+        Already a member? <router-link to="/login">Login now</router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -165,7 +167,7 @@ export default {
           this.$router.replace("/dashboard");
         }
       } catch (error) {
-        console.log(error.message);
+        alert(error.response.data.message);
       }
     },
   },
