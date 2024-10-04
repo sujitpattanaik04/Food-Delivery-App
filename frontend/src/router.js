@@ -5,12 +5,7 @@ import LogIn from "./pages/LogIn.vue";
 import DashBoard from "./pages/DashBoard.vue";
 import ForgotPassword from "./pages/ForgotPassword.vue";
 import ResetPassword from "./pages/ResetPassword.vue";
-
-// import CoachDetails from "./pages/coaches/CoachDetails.vue";
-// import ContactCoach from "./pages/requests/ContactCoach.vue";
-// import ReceivedRequests from "./pages/requests/ReceivedRequests.vue";
-// import CoachRegistration from "./pages/coaches/CoachRegistration.vue";
-// import NotFound from "./pages/NotFound.vue";
+import ChangePassword from "./pages/ChangePassword.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -21,15 +16,7 @@ const router = createRouter({
     { path: "/dashboard", component: DashBoard },
     { path: "/forgot-password", component: ForgotPassword },
     { path: "/reset-password/:token", component: ResetPassword },
-
-    // {
-    //   path: "/coaches/:id",
-    //   component: CoachDetails,
-    //   children: [{ path: "contact", component: ContactCoach }],
-    // },
-    // { path: "/requests", component: ReceivedRequests },
-    // { path: "/register", component: CoachRegistration },
-    // { path: "/:notfound(.*)", component: NotFound },
+    { path: "/change-password", component: ChangePassword },
   ],
 });
 

@@ -7,7 +7,11 @@ const protect = async (req, res, next) => {
   try {
     // 1. Read the token and check if it exists
     // const testToken = req.headers.authorization;
-    const token = req.headers.cookie?.split("=")[1];
+
+    // const token = req.headers.Cookie?.split("=")[1];
+    const token = req.headers.cookies;
+
+    console.log(req.headers);
 
     // if (testToken && testToken.startsWith("Bearer ")) {
     //   token = testToken.split(" ")[1];

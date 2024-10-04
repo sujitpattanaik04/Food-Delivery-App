@@ -48,7 +48,6 @@ const loginUser = async (userData) => {
   }
 
   const token = signToken(user.uuid);
-  console.log(100);
 
   return { user, token };
 };
@@ -147,7 +146,7 @@ const resetPassword = async (req) => {
 };
 
 const changePassword = async (req) => {
-  const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
   const user = req.user;
 
   const isPasswordValid = await user.comparePassword(
@@ -159,7 +158,7 @@ const changePassword = async (req) => {
     throw new Error("Please provide valid old password!");
   }
 
-  if (newPassword !== confirmNewPassword) {
+  if (newPassword !== confirmPassword) {
     throw new Error("new password and confirm new password must be same!");
   }
 

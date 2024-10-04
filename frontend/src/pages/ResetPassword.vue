@@ -61,7 +61,7 @@ export default {
             newPassword: this.newPassword,
           };
 
-          const response = await axios.post(
+          await axios.post(
             `http://127.0.0.1:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
             payload
           );
@@ -214,7 +214,7 @@ form .row input::placeholder {
 }
 
 .wrapper form .button input {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 500;

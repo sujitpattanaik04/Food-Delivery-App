@@ -6,7 +6,9 @@
       <div class="nav-links">
         <li class="center"><a href="#">Dashboard</a></li>
         <li class="center"><a href="#">Profile</a></li>
-        <li class="center"><a href="#">About</a></li>
+        <li class="center">
+          <router-link to="/change-password">Change Password</router-link>
+        </li>
       </div>
 
       <div class="icon-container">

@@ -7,6 +7,7 @@ const connection = require("./models/connection.js");
 const userRoute = require("./features/users/userApi.js");
 const authRoute = require("./features/authentication/authApi.js");
 
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -15,11 +16,13 @@ const app = express();
 
 app.use(
   cors({
-    credentials: true,
     origin: "http://localhost:8080",
+    credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
+
 app.use(
   morgan(customFormat, {
     stream: {
@@ -30,8 +33,8 @@ app.use(
         let logLevel;
         const statusCode = +status;
 
-        if (statusCode >= 400 && statusCode < 500) logLevel = "warn";
-        else if (statusCode >= 500) logLevel = "error";
+        if (statusCode >= 400 && statusCode < 500) logLevel = "error";
+        else if (statusCode >= 500) logLevel = "warn";
         else logLevel = "info";
 
         const logObject = {

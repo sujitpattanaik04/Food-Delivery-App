@@ -1,27 +1,15 @@
 <template>
   <div class="wrapper">
-    <div class="title"><span>Login Form</span></div>
+    <div class="title"><span>Change Password </span></div>
     <form @submit.prevent="handleSubmit">
-      <div class="row" :class="{ 'input-error': emailError }">
-        <i class="bx bx-envelope"></i>
-        <input
-          type="text"
-          placeholder="Email"
-          v-model="email"
-          required
-          @blur="getEmailError"
-        />
-        <span v-if="emailError" class="error-message">{{ emailError }}</span>
-      </div>
-
       <div class="row" :class="{ 'input-error': passwordError }">
         <i class="bx bx-lock"></i>
         <input
           :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="Password"
-          v-model="password"
+          placeholder="Old Password"
+          v-model="oldPassword"
           required
-          @blur="getPasswordError"
+          @blur="getPasswordError(oldPassword)"
         />
         <i
           class="toggle-password"
@@ -36,28 +24,52 @@
         }}</span>
       </div>
 
-      <div class="row" :class="{ 'input-error': roleError }">
-        <i class="bx bx-id-card"></i>
-        <select v-model="role" required @blur="getRoleError">
-          <option value="" disabled selected>Select Role</option>
-          <option value="admin">Admin</option>
-          <option value="customer">Customer</option>
-          <option value="delivery partner">Delivery Partner</option>
-          <option value="restaurant owner">Restaurant Owner</option>
-        </select>
-        <span class="arrow">▼</span>
-        <span v-if="roleError" class="error-message">{{ roleError }}</span>
+      <div class="row" :class="{ 'input-error': passwordError }">
+        <i class="bx bx-lock"></i>
+        <input
+          :type="isPasswordVisible ? 'text' : 'password'"
+          placeholder="New Password"
+          v-model="newPassword"
+          required
+          @blur="getPasswordError(newPassword)"
+        />
+        <i
+          class="toggle-password"
+          @click="togglePasswordVisibility"
+          :class="{
+            'bx bx-hide': isPasswordVisible === true,
+            'bx bx-show': isPasswordVisible === false,
+          }"
+        ></i>
+        <span v-if="passwordError" class="error-message">{{
+          passwordError
+        }}</span>
       </div>
 
-      <div class="pass">
-        <a @click="forgotPassword">Forgot password?</a>
+      <div class="row" :class="{ 'input-error': passwordError }">
+        <i class="bx bx-lock"></i>
+        <input
+          :type="isPasswordVisible ? 'text' : 'password'"
+          placeholder="New Password"
+          v-model="confirmPassword"
+          required
+          @blur="getPasswordError(confirmPassword)"
+        />
+        <i
+          class="toggle-password"
+          @click="togglePasswordVisibility"
+          :class="{
+            'bx bx-hide': isPasswordVisible === true,
+            'bx bx-show': isPasswordVisible === false,
+          }"
+        ></i>
+        <span v-if="passwordError" class="error-message">{{
+          passwordError
+        }}</span>
       </div>
 
       <div class="row button">
-        <input type="submit" value="Login" />
-      </div>
-      <div class="signup-link">
-        Not a member? <router-link to="/signup">Signup now</router-link>
+        <input type="submit" value="Change Password" />
       </div>
     </form>
   </div>
@@ -65,76 +77,53 @@
 
 <script>
 import axios from "axios";
-import Cookies from "js-cookie";
 
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      role: "",
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
       isPasswordVisible: false,
-      emailError: "",
       passwordError: "",
-      roleError: "",
     };
   },
   methods: {
-    getEmailError() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      this.emailError =
-        !emailPattern.test(this.email) && this.email
-          ? "Please enter a valid email."
-          : "";
-    },
-    getPasswordError() {
+    getPasswordError(password) {
       const passwordPattern =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
       this.passwordError =
-        !passwordPattern.test(this.password) && this.password
+        !passwordPattern.test(password) && password
           ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
           : "";
-    },
-    getRoleError() {
-      this.roleError = !this.role ? "Please select a role." : "";
     },
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
-    async forgotPassword() {
-      if (!this.email) {
-        alert("Please provide your email address!");
-      } else {
-        const response = await axios.post(
-          "http://127.0.0.1:3000/api/v1/auth/forgot-password",
-          { email: this.email }
-        );
-
-        if (response.data.status === "success") {
-          this.$router.push("/forgot-password");
-        }
-      }
-    },
     async handleSubmit() {
       try {
-        if (!this.emailError && !this.passwordError && !this.roleError) {
+        if (!this.passwordError) {
           const payload = {
-            email: this.email,
-            password: this.password,
-            role: this.role,
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword,
+            confirmPassword: this.confirmPassword,
           };
 
-          const response = await axios.post(
-            "http://127.0.0.1:3000/api/v1/auth/login",
-            payload
-          );
+          const authToken = document.cookie.split("=")[1];
 
-          Cookies.set("authToken", response.data.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.data.user));
+          await axios.post(
+            `http://127.0.0.1:3000/api/v1/auth/change-password`,
+            payload,
+            {
+              headers: {
+                cookies: authToken,
+              },
+            }
+          );
           this.$router.replace("/dashboard");
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         alert(error.response.data.message);
       }
     },
@@ -279,7 +268,7 @@ form .row input::placeholder {
 }
 
 .wrapper form .button input {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 500;
