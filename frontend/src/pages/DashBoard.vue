@@ -1,6 +1,6 @@
 <template>
   <the-header></the-header>
-  <h1>Hello {{ username }}, How's it going?</h1>
+  <h1>Hello {{ username }}! How's it going?</h1>
 </template>
 
 <script>

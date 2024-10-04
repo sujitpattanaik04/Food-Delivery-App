@@ -1,84 +1,91 @@
 <template>
-  <div class="wrapper">
-    <div class="title"><span>Change Password </span></div>
-    <form @submit.prevent="handleSubmit">
-      <div class="row" :class="{ 'input-error': passwordError }">
-        <i class="bx bx-lock"></i>
-        <input
-          :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="Old Password"
-          v-model="oldPassword"
-          required
-          @blur="getPasswordError(oldPassword)"
-        />
-        <i
-          class="toggle-password"
-          @click="togglePasswordVisibility"
-          :class="{
-            'bx bx-hide': isPasswordVisible === true,
-            'bx bx-show': isPasswordVisible === false,
-          }"
-        ></i>
-        <span v-if="passwordError" class="error-message">{{
-          passwordError
-        }}</span>
-      </div>
+  <section>
+    <the-header></the-header>
+    <div class="wrapper">
+      <div class="title"><span>Change Password </span></div>
+      <form @submit.prevent="handleSubmit">
+        <div class="row" :class="{ 'input-error': passwordError }">
+          <i class="bx bx-lock"></i>
+          <input
+            :type="isPasswordVisible ? 'text' : 'password'"
+            placeholder="Old Password"
+            v-model="oldPassword"
+            required
+            @blur="getPasswordError(oldPassword)"
+          />
+          <i
+            class="toggle-password"
+            @click="togglePasswordVisibility"
+            :class="{
+              'bx bx-hide': isPasswordVisible === true,
+              'bx bx-show': isPasswordVisible === false,
+            }"
+          ></i>
+          <span v-if="passwordError" class="error-message">{{
+            passwordError
+          }}</span>
+        </div>
 
-      <div class="row" :class="{ 'input-error': passwordError }">
-        <i class="bx bx-lock"></i>
-        <input
-          :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="New Password"
-          v-model="newPassword"
-          required
-          @blur="getPasswordError(newPassword)"
-        />
-        <i
-          class="toggle-password"
-          @click="togglePasswordVisibility"
-          :class="{
-            'bx bx-hide': isPasswordVisible === true,
-            'bx bx-show': isPasswordVisible === false,
-          }"
-        ></i>
-        <span v-if="passwordError" class="error-message">{{
-          passwordError
-        }}</span>
-      </div>
+        <div class="row" :class="{ 'input-error': passwordError }">
+          <i class="bx bx-lock"></i>
+          <input
+            :type="isPasswordVisible ? 'text' : 'password'"
+            placeholder="New Password"
+            v-model="newPassword"
+            required
+            @blur="getPasswordError(newPassword)"
+          />
+          <i
+            class="toggle-password"
+            @click="togglePasswordVisibility"
+            :class="{
+              'bx bx-hide': isPasswordVisible === true,
+              'bx bx-show': isPasswordVisible === false,
+            }"
+          ></i>
+          <span v-if="passwordError" class="error-message">{{
+            passwordError
+          }}</span>
+        </div>
 
-      <div class="row" :class="{ 'input-error': passwordError }">
-        <i class="bx bx-lock"></i>
-        <input
-          :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="New Password"
-          v-model="confirmPassword"
-          required
-          @blur="getPasswordError(confirmPassword)"
-        />
-        <i
-          class="toggle-password"
-          @click="togglePasswordVisibility"
-          :class="{
-            'bx bx-hide': isPasswordVisible === true,
-            'bx bx-show': isPasswordVisible === false,
-          }"
-        ></i>
-        <span v-if="passwordError" class="error-message">{{
-          passwordError
-        }}</span>
-      </div>
+        <div class="row" :class="{ 'input-error': passwordError }">
+          <i class="bx bx-lock"></i>
+          <input
+            :type="isPasswordVisible ? 'text' : 'password'"
+            placeholder="New Password"
+            v-model="confirmPassword"
+            required
+            @blur="getPasswordError(confirmPassword)"
+          />
+          <i
+            class="toggle-password"
+            @click="togglePasswordVisibility"
+            :class="{
+              'bx bx-hide': isPasswordVisible === true,
+              'bx bx-show': isPasswordVisible === false,
+            }"
+          ></i>
+          <span v-if="passwordError" class="error-message">{{
+            passwordError
+          }}</span>
+        </div>
 
-      <div class="row button">
-        <input type="submit" value="Change Password" />
-      </div>
-    </form>
-  </div>
+        <div class="row button">
+          <input type="submit" value="Change Password" />
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
 
 <script>
 import axios from "axios";
+import TheHeader from "../components/UI/TheHeader.vue";
 
 export default {
+  components: {
+    TheHeader,
+  },
   data() {
     return {
       oldPassword: "",
@@ -110,6 +117,7 @@ export default {
           };
 
           const authToken = document.cookie.split("=")[1];
+          console.log(document.cookie);
 
           await axios.post(
             `http://127.0.0.1:3000/api/v1/auth/change-password`,
@@ -142,6 +150,7 @@ export default {
 }
 
 .wrapper {
+  margin-top: 100px;
   max-width: 500px;
   width: 100%;
   background: #fff;

@@ -3,16 +3,16 @@
     <div class="nav-bar">
       <span class="logo navLogo"><a href="#">FooDelivery</a></span>
 
-      <div class="nav-links">
-        <li class="center"><a href="#">Dashboard</a></li>
-        <li class="center"><a href="#">Profile</a></li>
+      <div class="nav-links" v-if="user">
+        <li class="center">
+          <router-link to="/dashboard">Dashboard</router-link>
+        </li>
         <li class="center">
           <router-link to="/change-password">Change Password</router-link>
         </li>
-      </div>
-
-      <div class="icon-container">
-        <i class="bx bx-log-out" @click="logout"></i>
+        <li class="center">
+          <a @click="logout">Logout</a>
+        </li>
       </div>
     </div>
   </nav>
@@ -21,13 +21,20 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      user: null,
+    };
   },
   methods: {
     logout() {
+      document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       localStorage.clear();
-      this.$router.replace("/signup");
+      this.$router.replace("/login");
     },
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.user = user;
   },
 };
 </script>
@@ -71,9 +78,9 @@ nav .nav-bar {
 }
 
 nav .nav-bar .logo.navLogo a {
-  font-size: 25px;
-  font-weight: 500;
-  color: #16a085;
+  font-size: 30px;
+  font-weight: 700;
+  color: #609966;
   text-decoration: none;
 }
 
@@ -96,7 +103,7 @@ nav .nav-bar .logo.navLogo a {
 }
 
 .nav-links li a:hover {
-  color: #16a085;
+  color: #609966;
 }
 
 .nav-links li a:before {
@@ -106,7 +113,7 @@ nav .nav-bar .logo.navLogo a {
   left: 0;
   height: 3px;
   width: 0%;
-  background: #1abc9c;
+  background: #609966;
   border-radius: 12px;
   transition: all 0.4s ease;
 }
@@ -117,22 +124,6 @@ nav .nav-bar .logo.navLogo a {
   left: 50%;
   transform: translateX(-50%);
 }
-
-.icon-container {
-  display: flex;
-  align-items: center;
-}
-.icon-container i {
-  color: var(--text-color);
-  margin: 0 10px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.icon-container i:hover {
-  color: #1abc9c;
-}
-
 /* .nav-links li.upward a:before {
   width: 100%;
   bottom: -5px;

@@ -1,73 +1,80 @@
 <template>
-  <div class="wrapper">
-    <div class="title"><span>Login Form</span></div>
-    <form @submit.prevent="handleSubmit">
-      <div class="row" :class="{ 'input-error': emailError }">
-        <i class="bx bx-envelope"></i>
-        <input
-          type="text"
-          placeholder="Email"
-          v-model="email"
-          required
-          @blur="getEmailError"
-        />
-        <span v-if="emailError" class="error-message">{{ emailError }}</span>
-      </div>
+  <section>
+    <the-header></the-header>
+    <div class="wrapper">
+      <div class="title"><span>Login Form</span></div>
+      <form @submit.prevent="handleSubmit">
+        <div class="row" :class="{ 'input-error': emailError }">
+          <i class="bx bx-envelope"></i>
+          <input
+            type="text"
+            placeholder="Email"
+            v-model="email"
+            required
+            @blur="getEmailError"
+          />
+          <span v-if="emailError" class="error-message">{{ emailError }}</span>
+        </div>
 
-      <div class="row" :class="{ 'input-error': passwordError }">
-        <i class="bx bx-lock"></i>
-        <input
-          :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="Password"
-          v-model="password"
-          required
-          @blur="getPasswordError"
-        />
-        <i
-          class="toggle-password"
-          @click="togglePasswordVisibility"
-          :class="{
-            'bx bx-hide': isPasswordVisible === true,
-            'bx bx-show': isPasswordVisible === false,
-          }"
-        ></i>
-        <span v-if="passwordError" class="error-message">{{
-          passwordError
-        }}</span>
-      </div>
+        <div class="row" :class="{ 'input-error': passwordError }">
+          <i class="bx bx-lock"></i>
+          <input
+            :type="isPasswordVisible ? 'text' : 'password'"
+            placeholder="Password"
+            v-model="password"
+            required
+            @blur="getPasswordError"
+          />
+          <i
+            class="toggle-password"
+            @click="togglePasswordVisibility"
+            :class="{
+              'bx bx-hide': isPasswordVisible === true,
+              'bx bx-show': isPasswordVisible === false,
+            }"
+          ></i>
+          <span v-if="passwordError" class="error-message">{{
+            passwordError
+          }}</span>
+        </div>
 
-      <div class="row" :class="{ 'input-error': roleError }">
-        <i class="bx bx-id-card"></i>
-        <select v-model="role" required @blur="getRoleError">
-          <option value="" disabled selected>Select Role</option>
-          <option value="admin">Admin</option>
-          <option value="customer">Customer</option>
-          <option value="delivery partner">Delivery Partner</option>
-          <option value="restaurant owner">Restaurant Owner</option>
-        </select>
-        <span class="arrow">▼</span>
-        <span v-if="roleError" class="error-message">{{ roleError }}</span>
-      </div>
+        <div class="row" :class="{ 'input-error': roleError }">
+          <i class="bx bx-id-card"></i>
+          <select v-model="role" required @blur="getRoleError">
+            <option value="" disabled selected>Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="customer">Customer</option>
+            <option value="delivery partner">Delivery Partner</option>
+            <option value="restaurant owner">Restaurant Owner</option>
+          </select>
+          <span class="arrow">▼</span>
+          <span v-if="roleError" class="error-message">{{ roleError }}</span>
+        </div>
 
-      <div class="pass">
-        <a @click="forgotPassword">Forgot password?</a>
-      </div>
+        <div class="pass">
+          <a @click="forgotPassword">Forgot password?</a>
+        </div>
 
-      <div class="row button">
-        <input type="submit" value="Login" />
-      </div>
-      <div class="signup-link">
-        Not a member? <router-link to="/signup">Signup now</router-link>
-      </div>
-    </form>
-  </div>
+        <div class="row button">
+          <input type="submit" value="Login" />
+        </div>
+        <div class="signup-link">
+          Not a member? <router-link to="/signup">Signup now</router-link>
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
 
 <script>
 import axios from "axios";
-import Cookies from "js-cookie";
+import Cookie from "js-cookie";
+import TheHeader from "../components/UI/TheHeader.vue";
 
 export default {
+  components: {
+    TheHeader,
+  },
   data() {
     return {
       email: "",
@@ -129,7 +136,7 @@ export default {
             payload
           );
 
-          Cookies.set("authToken", response.data.data.token);
+          Cookie.set("authToken", response.data.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.data.user));
           this.$router.replace("/dashboard");
         }
@@ -138,6 +145,12 @@ export default {
         alert(error.response.data.message);
       }
     },
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.$router.replace("/dashboard");
+    }
   },
 };
 </script>
@@ -153,6 +166,7 @@ export default {
 }
 
 .wrapper {
+  margin-top: 100px;
   max-width: 500px;
   width: 100%;
   background: #fff;

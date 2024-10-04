@@ -127,7 +127,6 @@ const resetPassword = async (req) => {
       passwordResetTokenExpires: { [Op.gt]: Date.now() },
     },
   });
-  console.log(user);
 
   if (!user) {
     throw new Error("Token is invalid or has expired!");
