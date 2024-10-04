@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const signToken = require("../../utils/signToken.js");
 const sendEmail = require("../../utils/email.js");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const User = db.User;
 const Role = db.Role;
@@ -61,15 +62,33 @@ const forgotPassword = async (req) => {
     },
   });
 
-  if (!user) throw new Error("User with the given email is not found!");
+  if (!user) throw new Error("the given email is not found!");
 
   const resetToken = await user.createResetPasswordToken();
 
   await user.save();
+  console.log(123);
 
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/reset-password/${resetToken}`;
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: "sujit.pattanaik@argusoft.in",
+      pass: "zepk rles rmrc iimd",
+    },
+  });
+
+  const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
+
+  let text = `<p>This is your passwod reset link:</p> <a>${resetUrl}</a>`;
+  console.log(1234);
+
+  await transporter.sendMail({
+    to: user.email,
+    subject: "Password Reset Link",
+    html: text,
+    link: `resetUrl`,
+  });
+  console.log(12345);
 
   const msg = `Hello ${user.email}, \nWe have received a password reset request. Please use below link to reset your password. Which is valid only for 10 minutes.\n${resetUrl}`;
 

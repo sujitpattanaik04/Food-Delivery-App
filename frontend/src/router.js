@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp.vue";
 import LogIn from "./pages/LogIn.vue";
 import DashBoard from "./pages/DashBoard.vue";
 import ForgotPassword from "./pages/ForgotPassword.vue";
+import ResetPassword from "./pages/ResetPassword.vue";
 
 // import CoachDetails from "./pages/coaches/CoachDetails.vue";
 // import ContactCoach from "./pages/requests/ContactCoach.vue";
@@ -20,6 +21,7 @@ const router = createRouter({
     { path: "/login", component: LogIn },
     { path: "/dashboard", component: DashBoard },
     { path: "/forgot-password", component: ForgotPassword },
+    { path: "/reset-password/:token", component: ResetPassword },
 
     // {
     //   path: "/coaches/:id",

@@ -98,11 +98,19 @@ export default {
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
-    forgotPassword() {
-      if (this.email) {
-        this.$router.push("/forgot-password");
+    async forgotPassword() {
+      if (!this.email) {
+        alert("Please provide your email address!");
+      } else {
+        const response = await axios.post(
+          "http://127.0.0.1:3000/api/v1/auth/forgot-password",
+          { email: this.email }
+        );
+
+        if (response.data.status === "success") {
+          this.$router.push("/forgot-password");
+        }
       }
-      alert("Please provide your email address!");
     },
     async handleSubmit() {
       try {
@@ -124,7 +132,8 @@ export default {
           this.$router.replace("/dashboard");
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+        alert(error.response.data.message);
       }
     },
   },
