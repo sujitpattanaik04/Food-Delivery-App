@@ -14,6 +14,15 @@
           <a @click="logout">Logout</a>
         </li>
       </div>
+
+      <div class="nav-links" v-else>
+        <li class="center">
+          <router-link to="/login">Login</router-link>
+        </li>
+        <li class="center">
+          <router-link to="/signup">Signup</router-link>
+        </li>
+      </div>
     </div>
   </nav>
 </template>
@@ -56,13 +65,8 @@ nav {
   left: 0;
   height: 70px;
   width: 100%;
-  color: black;
   z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-body.dark nav {
-  border: 1px solid #393838;
 }
 
 nav .nav-bar {
@@ -78,6 +82,7 @@ nav .nav-bar {
 }
 
 nav .nav-bar .logo.navLogo a {
+  margin-left: -500px;
   font-size: 30px;
   font-weight: 700;
   color: #609966;
@@ -87,6 +92,7 @@ nav .nav-bar .logo.navLogo a {
 .nav-bar .nav-links {
   display: flex;
   align-items: center;
+  margin-right: -340px;
 }
 
 .nav-links li {

@@ -4,100 +4,62 @@ const {
   resetPasswordService,
   changePasswordService,
 } = require("./authService.js");
+const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
 
-const loginUser = async (req, res) => {
-  try {
-    const { user, token } = await loginUserService(req.body);
+const loginUser = asyncErrorHandler(async (req, res) => {
+  const { user, token } = await loginUserService(req.body);
 
-    const options = {
-      maxAge: process.env.LOGIN_EXPIRES_IN,
-    };
+  const options = {
+    maxAge: process.env.LOGIN_EXPIRES_IN,
+  };
 
-    res.cookie("authToken", token, options);
+  res.cookie("authToken", token, options);
 
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestedAt,
-      message: "You have logged in successfully!",
-      data: { user, token },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      requestedAt: req.requestedAt,
-      message: error.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "You have logged in successfully!",
+    data: { user, token },
+  });
+});
 
-const forgotPassword = async (req, res) => {
-  try {
-    await forgotPasswordService(req);
+const forgotPassword = asyncErrorHandler(async (req, res, next) => {
+  await forgotPasswordService(req);
 
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestedAt,
-      message: "Password reset link was sent to the user's email successfully",
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: "failed",
-      requestedAt: req.requestedAt,
-      message: error.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "Password reset link was sent to the user's email successfully",
+  });
+});
 
-const resetPassword = async (req, res) => {
-  try {
-    await resetPasswordService(req);
+const resetPassword = asyncErrorHandler(async (req, res, next) => {
+  await resetPasswordService(req);
 
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestedAt,
-      message: "Password reset successfully",
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      requestedAt: req.requestedAt,
-      message: error,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "Password reset successfully",
+  });
+});
 
-const changePassword = async (req, res) => {
-  try {
-    await changePasswordService(req);
+const changePassword = asyncErrorHandler(async (req, res, next) => {
+  await changePasswordService(req);
 
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestedAt,
-      message: "Password changed successfully",
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      requestedAt: req.requestedAt,
-      message: error.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "Password changed successfully",
+  });
+});
 
-const logoutUser = async (req, res) => {
-  try {
-    res.clearCookie("authToken");
-    res.status(200).json({
-      status: "success",
-      message: "Logout successful!",
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      message: "Something went wrong!",
-    });
-  }
-};
+const logoutUser = asyncErrorHandler(async (req, res, next) => {
+  res.clearCookie("authToken");
+  res.status(200).json({
+    status: "success",
+    message: "Logout successful!",
+  });
+});
 
 module.exports = {
   loginUser,

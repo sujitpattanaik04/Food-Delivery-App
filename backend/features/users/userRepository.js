@@ -7,31 +7,8 @@ const User = db.User;
 const Role = db.Role;
 const UserRole = db.UserRole;
 
-const registerUser = async (newUser) => {
-  //GETTING ROLE FROM REQ BODY
-  const { email, phone, role } = newUser;
-
-  //DELETING ROLE FROM NEW USER DATA BECAUSE WE NEED NOT TO ADD IT IN OUR USER TABLE
-  delete newUser.role;
-
-  //FINDING EXISTING ROLE FROM ROLE TABLE
-  const enteredRole = await Role.findOne({
-    where: {
-      roleName: {
-        [Op.iLike]: role,
-      },
-    },
-  });
-
-  //CHECK PASSWORD FORMAT
-  try {
-    validatePassword(newUser.password);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-
-  //CHECKING WHETHER USER ALREADY EXISTS OR NOT
-  let user = await User.findOne({
+const fetchUserByEmailOrPhone = async (email, phone) => {
+  return await User.findOne({
     where: {
       [Op.or]: {
         email,
@@ -48,34 +25,35 @@ const registerUser = async (newUser) => {
       ],
     },
   });
+};
 
-  if (!user) {
-    //ADD NEW USER TO OUR USER TABLE
-    user = await User.create(newUser);
-  }
-
-  //CHECK WHETHER ENTERED ROLE EXIST WITH USER OR NOT
-  let existedUserRole = await UserRole.findOne({
+const fetchRole = async (role) => {
+  return await Role.findOne({
     where: {
-      user_uuid: user.uuid,
-      role_uuid: enteredRole.uuid,
+      roleName: {
+        [Op.iLike]: role,
+      },
     },
   });
+};
 
-  //IF EXISTS
-  if (existedUserRole) {
-    throw new Error("User with given email or phone is already exist!");
-  }
-
-  //ADDING ENTRY TO OUR USER_ROLE THROUGH TABLE
-  await UserRole.create({
-    user_uuid: user.uuid,
-    role_uuid: enteredRole.uuid,
+const fetchUserRole = async (user, role) => {
+  return await UserRole.findOne({
+    where: {
+      user_uuid: user.uuid,
+      role_uuid: role.uuid,
+    },
   });
+};
+const createUser = async (userData) => {
+  return await User.create(userData);
+};
 
-  const token = signToken(user.uuid);
-
-  return { user, token };
+const createUserRole = async (user, role) => {
+  return await UserRole.create({
+    user_uuid: user.uuid,
+    role_uuid: role.uuid,
+  });
 };
 
 // const deleteUser = async (userId) => {
@@ -90,11 +68,16 @@ const registerUser = async (newUser) => {
 // };
 
 const deleteUser = async (userId) => {
-  console.log(newUser);
-  await User.destroy({
+  return await User.destroy({
     where: { uuid: userId },
   });
-  return;
 };
 
-module.exports = { registerUser, deleteUser };
+module.exports = {
+  fetchUserByEmailOrPhone,
+  fetchRole,
+  createUser,
+  createUserRole,
+  fetchUserRole,
+  deleteUser,
+};

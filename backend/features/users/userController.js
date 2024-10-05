@@ -1,52 +1,38 @@
 const { registerUserService, deleteUserService } = require("./userService.js");
+const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
 
-const registerUser = async (req, res) => {
-  try {
-    const { user: newUser, token } = await registerUserService(req.body);
+const registerUser = asyncErrorHandler(async (req, res) => {
+  const { user: newUser, token } = await registerUserService(req.body);
 
-    delete newUser.dataValues.password;
-    delete newUser.dataValues.deletedAt;
-    delete newUser.dataValues.passwordChangedAt;
-    delete newUser.dataValues.passwordResetToken;
-    delete newUser.dataValues.passwordResetTokenExpires;
+  delete newUser.dataValues.password;
+  delete newUser.dataValues.deletedAt;
+  delete newUser.dataValues.passwordChangedAt;
+  delete newUser.dataValues.passwordResetToken;
+  delete newUser.dataValues.passwordResetTokenExpires;
 
-    const options = {
-      maxAge: process.env.LOGIN_EXPIRES_IN,
-      httpOnly: true,
-    };
+  const options = {
+    maxAge: process.env.LOGIN_EXPIRES_IN,
+    httpOnly: true,
+  };
 
-    res.cookie("authToken", token, options);
+  res.cookie("authToken", token, options);
 
-    res.status(201).json({
-      status: "success",
-      requestedAt: req.requestedAt,
-      message: "User created successfully!",
-      data: newUser,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      requestedAt: req.requestedAt,
-      message: error.message,
-    });
-  }
-};
+  res.status(201).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "User created successfully!",
+    data: newUser,
+  });
+});
 
-const deleteUser = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const user = await deleteUserService(userId);
+const deleteUser = asyncErrorHandler(async (req, res) => {
+  const { userId } = req.params;
+  const user = await deleteUserService(userId);
 
-    res.status(200).json({
-      status: "success",
-      data: user,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "failed",
-      message: error,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    data: user,
+  });
+});
 
 module.exports = { registerUser, deleteUser };
