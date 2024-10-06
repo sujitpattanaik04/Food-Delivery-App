@@ -90,8 +90,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import TheHeader from "../components/UI/TheHeader.vue";
+import axios from "axios";
+import { toast } from "vue3-toastify";
 
 export default {
   components: {
@@ -165,16 +166,37 @@ export default {
             role: this.role,
           };
 
-          const response = await axios.post(
+          const res = await axios.post(
             "http://127.0.0.1:3000/api/v1/users/signup",
             payload
           );
 
-          localStorage.setItem("user", JSON.stringify(response.data.data));
+          toast.success(res.data?.message, {
+            icon: false,
+            icon: <i style={{ fontSize: "16px" }} class="custom-icon" />,
+            type: "success",
+            autoClose: 3000,
+            closeOnClick: false,
+            pauseOnHover: false,
+            position: "top-right",
+            transition: "flip",
+            dangerouslyHTMLString: true,
+          });
+
+          localStorage.setItem("user", JSON.stringify(res.data?.data));
           this.$router.replace("/dashboard");
         }
       } catch (error) {
-        alert(error.response.data.message);
+        console.log(error.response?.data?.message);
+        toast.error(error.response?.data?.message || error.message, {
+          type: "error",
+          autoClose: 3000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          position: "top-right",
+          transition: "flip",
+          dangerouslyHTMLString: true,
+        });
       }
     },
   },
@@ -203,14 +225,14 @@ export default {
 
 .wrapper .title {
   height: 120px;
-  background: #609966;
-  border-radius: 5px 5px 0 0;
-  color: #fff;
+  color: #609966;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
+  margin-inline: 15px;
 }
 
 .wrapper form {
@@ -263,10 +285,9 @@ form .row input::placeholder {
   position: absolute;
   width: 55px;
   height: 100%;
-  color: #fff;
+  color: grey;
   font-size: 22px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: 0.5px solid rgba(128, 128, 128, 0.337);
   border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
@@ -280,7 +301,7 @@ form .row input::placeholder {
   transform: translateY(-50%);
   cursor: pointer;
   background: transparent;
-  color: #609966;
+  color: grey;
   font-size: 28px;
   border: none;
 }
@@ -290,7 +311,7 @@ form .row input::placeholder {
   right: 34px;
   top: 50%;
   transform: translateY(-50%);
-  color: #609966;
+  color: grey;
   font-size: 18px;
 }
 
@@ -342,5 +363,10 @@ form .signup-link a:hover {
   font-size: 15px;
   position: absolute;
   width: 450px;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
 </style>

@@ -1,11 +1,19 @@
 const { Op } = require("sequelize");
 const { db } = require("../../models/connection.js");
-const validatePassword = require("../../utils/passwordValidator.js");
-const signToken = require("../../utils/signToken.js");
 
 const User = db.User;
 const Role = db.Role;
 const UserRole = db.UserRole;
+
+const fetchRole = async (role) => {
+  return await Role.findOne({
+    where: {
+      roleName: {
+        [Op.iLike]: role,
+      },
+    },
+  });
+};
 
 const fetchUserByEmailOrPhone = async (email, phone) => {
   return await User.findOne({
@@ -27,14 +35,8 @@ const fetchUserByEmailOrPhone = async (email, phone) => {
   });
 };
 
-const fetchRole = async (role) => {
-  return await Role.findOne({
-    where: {
-      roleName: {
-        [Op.iLike]: role,
-      },
-    },
-  });
+const createUser = async (userData) => {
+  return await User.create(userData);
 };
 
 const fetchUserRole = async (user, role) => {
@@ -44,9 +46,6 @@ const fetchUserRole = async (user, role) => {
       role_uuid: role.uuid,
     },
   });
-};
-const createUser = async (userData) => {
-  return await User.create(userData);
 };
 
 const createUserRole = async (user, role) => {
@@ -74,8 +73,8 @@ const deleteUser = async (userId) => {
 };
 
 module.exports = {
-  fetchUserByEmailOrPhone,
   fetchRole,
+  fetchUserByEmailOrPhone,
   createUser,
   createUserRole,
   fetchUserRole,

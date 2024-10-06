@@ -7,66 +7,66 @@
         <div class="row" :class="{ 'input-error': passwordError }">
           <i class="bx bx-lock"></i>
           <input
-            :type="isPasswordVisible ? 'text' : 'password'"
+            :type="isOldPasswordVisible ? 'text' : 'password'"
             placeholder="Old Password"
             v-model="oldPassword"
             required
-            @blur="getPasswordError(oldPassword)"
+            @blur="getOldPasswordError"
           />
           <i
             class="toggle-password"
-            @click="togglePasswordVisibility"
+            @click="toggleOldPasswordVisibility"
             :class="{
-              'bx bx-hide': isPasswordVisible === true,
-              'bx bx-show': isPasswordVisible === false,
+              'bx bx-hide': isOldPasswordVisible === true,
+              'bx bx-show': isOldPasswordVisible === false,
             }"
           ></i>
-          <span v-if="passwordError" class="error-message">{{
-            passwordError
+          <span v-if="oldPasswordError" class="error-message">{{
+            oldPasswordError
           }}</span>
         </div>
 
         <div class="row" :class="{ 'input-error': passwordError }">
           <i class="bx bx-lock"></i>
           <input
-            :type="isPasswordVisible ? 'text' : 'password'"
+            :type="isNewPasswordVisible ? 'text' : 'password'"
             placeholder="New Password"
             v-model="newPassword"
             required
-            @blur="getPasswordError(newPassword)"
+            @blur="getNewPasswordError"
           />
           <i
             class="toggle-password"
-            @click="togglePasswordVisibility"
+            @click="toggleNewPasswordVisibility"
             :class="{
-              'bx bx-hide': isPasswordVisible === true,
-              'bx bx-show': isPasswordVisible === false,
+              'bx bx-hide': isNewPasswordVisible === true,
+              'bx bx-show': isNewPasswordVisible === false,
             }"
           ></i>
-          <span v-if="passwordError" class="error-message">{{
-            passwordError
+          <span v-if="newPasswordError" class="error-message">{{
+            newPasswordError
           }}</span>
         </div>
 
         <div class="row" :class="{ 'input-error': passwordError }">
           <i class="bx bx-lock"></i>
           <input
-            :type="isPasswordVisible ? 'text' : 'password'"
-            placeholder="New Password"
+            :type="isConfirmPasswordVisible ? 'text' : 'password'"
+            placeholder="Confirm Password"
             v-model="confirmPassword"
             required
-            @blur="getPasswordError(confirmPassword)"
+            @blur="getConfirmPasswordError"
           />
           <i
             class="toggle-password"
-            @click="togglePasswordVisibility"
+            @click="toggleConfirmPasswordVisibility"
             :class="{
-              'bx bx-hide': isPasswordVisible === true,
-              'bx bx-show': isPasswordVisible === false,
+              'bx bx-hide': isConfirmPasswordVisible === true,
+              'bx bx-show': isConfirmPasswordVisible === false,
             }"
           ></i>
-          <span v-if="passwordError" class="error-message">{{
-            passwordError
+          <span v-if="confirmPasswordError" class="error-message">{{
+            confirmPasswordError
           }}</span>
         </div>
 
@@ -88,25 +88,50 @@ export default {
   },
   data() {
     return {
+      passwordPattern:
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      msg: "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase",
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
-      isPasswordVisible: false,
-      passwordError: "",
+      isOldPasswordVisible: false,
+      isNewPasswordVisible: false,
+      isConfirmPasswordVisible: false,
+      oldPasswordError: "",
+      newPasswordError: "",
+      confirmPasswordError: "",
     };
   },
   methods: {
-    getPasswordError(password) {
-      const passwordPattern =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-      this.passwordError =
-        !passwordPattern.test(password) && password
-          ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
+    getOldPasswordError() {
+      this.oldPasswordError =
+        !this.passwordPattern.test(this.oldPassword) && this.oldPassword
+          ? this.msg
           : "";
     },
-    togglePasswordVisibility() {
-      this.isPasswordVisible = !this.isPasswordVisible;
+    getNewPasswordError() {
+      this.newPasswordError =
+        !this.passwordPattern.test(this.newPassword) && this.newPassword
+          ? this.msg
+          : "";
     },
+    getConfirmPasswordError() {
+      this.confirmPasswordError =
+        !this.passwordPattern.test(this.confirmPassword) && this.confirmPassword
+          ? this.msg
+          : "";
+    },
+
+    toggleOldPasswordVisibility() {
+      this.isOldPasswordVisible = !this.isOldPasswordVisible;
+    },
+    toggleNewPasswordVisibility() {
+      this.isNewPasswordVisible = !this.isNewPasswordVisible;
+    },
+    toggleConfirmPasswordVisibility() {
+      this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
+    },
+
     async handleSubmit() {
       try {
         if (!this.passwordError) {
@@ -161,14 +186,15 @@ export default {
 
 .wrapper .title {
   height: 120px;
-  background: #609966;
+  color: #609966;
   border-radius: 5px 5px 0 0;
-  color: #fff;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
+  margin-inline: 15px;
 }
 
 .wrapper form {
@@ -226,10 +252,9 @@ form .row input::placeholder {
   position: absolute;
   width: 55px;
   height: 100%;
-  color: #fff;
+  color: grey;
   font-size: 22px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: 0.5px solid rgba(128, 128, 128, 0.337);
   border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
@@ -242,7 +267,7 @@ form .row input::placeholder {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #609966;
+  color: grey;
   background: transparent;
   border: none;
   font-size: 28px;

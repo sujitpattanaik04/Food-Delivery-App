@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="title"><span>Login Form</span></div>
+    <div class="title"><span>Reset Password</span></div>
     <form @submit.prevent="handleSubmit">
       <div class="row" :class="{ 'input-error': passwordError }">
         <i class="bx bx-lock"></i>
@@ -98,14 +98,15 @@ export default {
 
 .wrapper .title {
   height: 120px;
-  background: #609966;
+  color: #609966;
   border-radius: 5px 5px 0 0;
-  color: #fff;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
+  margin-inline: 15px;
 }
 
 .wrapper form {
@@ -163,10 +164,9 @@ form .row input::placeholder {
   position: absolute;
   width: 55px;
   height: 100%;
-  color: #fff;
+  color: grey;
   font-size: 22px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: 0.5px solid rgba(128, 128, 128, 0.337);
   border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
@@ -179,7 +179,7 @@ form .row input::placeholder {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #609966;
+  color: grey;
   background: transparent;
   border: none;
   font-size: 28px;

@@ -1,32 +1,34 @@
 const {
-  fetchUserByEmailOrPhone,
   fetchRole,
+  fetchUserByEmailOrPhone,
   createUser,
-  createUserRole,
   fetchUserRole,
+  createUserRole,
   deleteUser,
 } = require("./userRepository.js");
 const CustomError = require("../../utils/customError.js");
+const validatePassword = require("../../utils/passwordValidator.js");
+const signToken = require("../../utils/signToken.js");
 
 const registerUserService = async (userData) => {
   //GETTING ROLE FROM REQ BODY
-  const { email, phone, role } = userData;
+  let { email, phone, role } = userData;
 
   //DELETING ROLE FROM NEW USER DATA BECAUSE WE NEED NOT TO ADD IT IN OUR USER TABLE
-  delete newUser.role;
+  delete userData.role;
 
   //FINDING EXISTING ROLE FROM ROLE TABLE
   role = await fetchRole(role);
 
   //CHECK PASSWORD FORMAT
   try {
-    validatePassword(newUser.password);
+    validatePassword(userData.password);
   } catch (error) {
-    next(new CustomError(error.message, 400));
+    throw new CustomError(error.message, 400);
   }
 
   //CHECKING WHETHER USER ALREADY EXISTS OR NOT
-  const user = await fetchUserByEmailOrPhone(email, phone);
+  let user = await fetchUserByEmailOrPhone(email, phone);
 
   if (!user) {
     //ADD NEW USER TO OUR USER TABLE
@@ -38,8 +40,9 @@ const registerUserService = async (userData) => {
 
   //IF EXISTS
   if (userRole)
-    next(
-      new CustomError("User with given email or phone is already exist !!", 400)
+    throw new CustomError(
+      "User with given email or phone is already exist !!",
+      400
     );
 
   //ADDING ENTRY TO OUR USER_ROLE THROUGH TABLE

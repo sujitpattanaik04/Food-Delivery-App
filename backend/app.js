@@ -5,9 +5,9 @@ const userRoute = require("./features/users/userApi.js");
 const authRoute = require("./features/authentication/authApi.js");
 
 const cookieParser = require("cookie-parser");
-const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const express = require("express");
 
 const app = express();
 
@@ -17,6 +17,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(cookieParser());
 app.use(express.json());
 
@@ -24,6 +25,8 @@ app.use(
   morgan(customFormat, {
     stream: {
       write: (message) => {
+        console.log(message);
+
         const [method, url, status, responseSize, responseTime] =
           message.split(" ");
 
@@ -57,9 +60,7 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
 
 app.all("*", (req, res, next) => {
-  const err = new CustomError(`Can't find the ${req.url} on the server!`, 404);
-
-  next(err);
+  next(new CustomError(`Can't find the ${req.url} on the server!`, 404));
 });
 
 app.use(GlobalErrorHandler);

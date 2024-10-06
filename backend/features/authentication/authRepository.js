@@ -23,15 +23,6 @@ const fetchUserByEmail = async (email) => {
   });
 };
 
-const fetchUserByResetToken = async (token) => {
-  return await User.findOne({
-    where: {
-      passwordResetToken: token,
-      passwordResetTokenExpires: { [Op.gt]: Date.now() },
-    },
-  });
-};
-
 const fetchUserRole = async (user, role) => {
   return await UserRole.findOne({
     where: {
@@ -41,9 +32,18 @@ const fetchUserRole = async (user, role) => {
   });
 };
 
+const fetchUserByResetToken = async (token) => {
+  return await User.findOne({
+    where: {
+      passwordResetToken: token,
+      passwordResetTokenExpires: { [Op.gt]: Date.now() },
+    },
+  });
+};
+
 module.exports = {
   fetchRole,
   fetchUserByEmail,
-  fetchUserByResetToken,
   fetchUserRole,
+  fetchUserByResetToken,
 };

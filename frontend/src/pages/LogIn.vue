@@ -177,14 +177,14 @@ export default {
 
 .wrapper .title {
   height: 120px;
-  background: #609966;
-  border-radius: 5px 5px 0 0;
-  color: #fff;
+  color: #609966;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
+  margin-inline: 15px;
 }
 
 .wrapper form {
@@ -207,26 +207,21 @@ export default {
   border: 1px solid lightgrey;
   font-size: 18px;
   transition: all 0.3s ease;
-  color: #333; /* Set text color to black when typing */
+  color: #333;
 }
 
 .wrapper form .row select {
-  padding-right: 30px; /* Space for the arrow */
-  appearance: none; /* Remove default dropdown icon */
-  color: #666; /* Set text color of the select field to a faded color */
+  padding-right: 30px;
+  appearance: none;
+  color: #666;
 }
 
 .wrapper form .row select option {
-  color: #333; /* Set dropdown options color to black */
+  color: #333;
 }
 
 .wrapper form .row select option[value=""] {
-  color: rgba(
-    51,
-    51,
-    51,
-    0.7
-  ); /* Placeholder color to match input placeholder */
+  color: rgba(51, 51, 51, 0.7);
 }
 
 form .row input:focus,
@@ -235,17 +230,16 @@ form .row select:focus {
 }
 
 form .row input::placeholder {
-  color: #999; /* Placeholder color for input fields */
+  color: #999;
 }
 
 .wrapper form .row i {
   position: absolute;
   width: 55px;
   height: 100%;
-  color: #fff;
+  color: grey;
   font-size: 22px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: 0.5px solid rgba(128, 128, 128, 0.337);
   border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
@@ -258,10 +252,10 @@ form .row input::placeholder {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #609966;
   background: transparent;
-  border: none;
+  color: grey;
   font-size: 28px;
+  border: none;
 }
 
 .wrapper form .row .arrow {
@@ -269,7 +263,7 @@ form .row input::placeholder {
   right: 34px;
   top: 50%;
   transform: translateY(-50%);
-  color: #609966;
+  color: grey;
   font-size: 18px;
 }
 
@@ -287,13 +281,12 @@ form .row input::placeholder {
   font-size: 17px;
   text-decoration: none;
 }
-
 .wrapper form .pass a:hover {
   text-decoration: underline;
 }
 
 .wrapper form .button input {
-  margin-top: 20px;
+  margin-top: 25px;
   color: #fff;
   font-size: 20px;
   font-weight: 500;

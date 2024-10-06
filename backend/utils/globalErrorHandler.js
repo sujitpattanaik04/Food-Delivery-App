@@ -6,5 +6,7 @@ module.exports = (error, req, res, next) => {
     status: error.status,
     requestedAt: req.requestedAt,
     message: error.message,
+    stackTrace: error.stack,
+    error: error,
   });
 };

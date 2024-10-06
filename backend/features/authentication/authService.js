@@ -1,8 +1,8 @@
 const {
   fetchRole,
   fetchUserByEmail,
-  fetchUserByResetToken,
   fetchUserRole,
+  fetchUserByResetToken,
 } = require("./authRepository.js");
 const signToken = require("../../utils/signToken.js");
 const sendEmail = require("../../utils/gmail.js");
@@ -17,17 +17,17 @@ const loginUserService = async (userData) => {
   const user = await fetchUserByEmail(email);
 
   if (!user)
-    next(new CustomError("User with the given email couldn't found !!", 404));
+    throw new CustomError("User with the given email couldn't found !!", 404);
 
   const isPasswordValid = await user.comparePassword(password, user.password);
 
   if (!isPasswordValid)
-    next(new CustomError("You have entered wrong password !!", 400));
+    throw new CustomError("You have entered wrong password !!", 400);
 
   const userRole = await fetchUserRole(user, role);
 
   if (!userRole)
-    next(new CustomError("You have entered incorrect role !!", 400));
+    throw new CustomError("You have entered incorrect role !!", 400);
 
   const token = signToken(user.uuid);
 
@@ -39,7 +39,7 @@ const forgotPasswordService = async (req) => {
 
   const user = await fetchUserByEmail(email);
 
-  if (!user) next(new CustomError("User the given email is not found!", 404));
+  if (!user) throw new CustomError("User the given email is not found!", 404);
 
   const resetToken = await user.createResetPasswordToken();
 
@@ -62,7 +62,7 @@ const forgotPasswordService = async (req) => {
     user.save();
 
     if (!user)
-      next(new CustomError("Something went wrong in sending mail !!", 404));
+      throw new CustomError("Something went wrong in sending mail !!", 404);
   }
 
   return;
@@ -78,7 +78,7 @@ const resetPasswordService = async (req) => {
 
   const user = await fetchUserByResetToken(token);
 
-  if (!user) next(new CustomError("Token is invalid or has expired!", 400));
+  if (!user) throw new CustomError("Token is invalid or has expired!", 400);
 
   user.password = newPassword;
   user.passwordResetToken = null;
@@ -100,14 +100,12 @@ const changePasswordService = async (req) => {
   );
 
   if (!isPasswordValid)
-    next(new CustomError("Please provide valid old password!", 400));
+    throw new CustomError("Please provide valid old password!", 400);
 
   if (newPassword !== confirmPassword)
-    next(
-      new CustomError(
-        "new password and confirm new password must be same!",
-        400
-      )
+    throw new CustomError(
+      "new password and confirm password must be same!",
+      400
     );
 
   user.password = newPassword;

@@ -23,17 +23,17 @@ const loginUser = asyncErrorHandler(async (req, res) => {
   });
 });
 
-const forgotPassword = asyncErrorHandler(async (req, res, next) => {
+const forgotPassword = asyncErrorHandler(async (req, res) => {
   await forgotPasswordService(req);
 
   res.status(200).json({
     status: "success",
     requestedAt: req.requestedAt,
-    message: "Password reset link was sent to the user's email successfully",
+    message: "Password reset link was sent to the your email successfully",
   });
 });
 
-const resetPassword = asyncErrorHandler(async (req, res, next) => {
+const resetPassword = asyncErrorHandler(async (req, res) => {
   await resetPasswordService(req);
 
   res.status(200).json({
@@ -43,7 +43,7 @@ const resetPassword = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
-const changePassword = asyncErrorHandler(async (req, res, next) => {
+const changePassword = asyncErrorHandler(async (req, res) => {
   await changePasswordService(req);
 
   res.status(200).json({
@@ -53,18 +53,18 @@ const changePassword = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
-const logoutUser = asyncErrorHandler(async (req, res, next) => {
-  res.clearCookie("authToken");
-  res.status(200).json({
-    status: "success",
-    message: "Logout successful!",
-  });
-});
+// const logoutUser = asyncErrorHandler(async (req, res) => {
+//   res.clearCookie("authToken");
+//   res.status(200).json({
+//     status: "success",
+//     requestedAt: req.requestedAt,
+//     message: "Logout successful!",
+//   });
+// });
 
 module.exports = {
   loginUser,
   forgotPassword,
   resetPassword,
   changePassword,
-  logoutUser,
 };
