@@ -134,6 +134,15 @@ export default {
       this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
     },
 
+    created() {
+      const user = this.$store.commit("getUser");
+      console.log(user);
+
+      if (!user) {
+        this.$router.replace("/");
+      }
+    },
+
     async handleSubmit() {
       try {
         if (!this.passwordError) {
@@ -144,7 +153,6 @@ export default {
           };
 
           const authToken = document.cookie.split("=")[1];
-          console.log(document.cookie);
 
           const res = await axios.post(
             `http://192.1.200.113:3000/api/v1/auth/change-password`,

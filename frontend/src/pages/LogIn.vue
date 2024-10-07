@@ -92,7 +92,7 @@ export default {
     getEmailError() {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       this.emailError =
-        !emailPattern.test(this.email) && this.email
+        this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
           : "";
     },
@@ -100,7 +100,7 @@ export default {
       const passwordPattern =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
       this.passwordError =
-        !passwordPattern.test(this.password) && this.password
+        this.password && !passwordPattern.test(this.password)
           ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
           : "";
     },
@@ -114,12 +114,12 @@ export default {
       if (!this.email) {
         alert("Please provide your email address !!");
       } else {
-        const response = await axios.post(
-          "http://127.0.0.1:3000/api/v1/auth/forgot-password",
+        const res = await axios.post(
+          "http://localhost:3000/api/v1/auth/forgot-password",
           { email: this.email }
         );
 
-        if (response.data.status === "success") {
+        if (res.data.status === "success") {
           this.$router.push("/forgot-password");
         }
       }
@@ -146,8 +146,10 @@ export default {
             transition: "flip",
           });
 
+          this.$store.commit("setUser", res.data.data);
           localStorage.setItem("user", JSON.stringify(res.data.data.user));
           Cookie.set("authToken", res.data.data.token);
+
           setTimeout(() => {
             this.$router.replace("/dashboard");
           }, 1500);
@@ -165,7 +167,7 @@ export default {
     },
   },
   created() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = this.$store.commit("getUser");
     if (user) {
       this.$router.replace("/dashboard");
     }

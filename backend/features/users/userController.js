@@ -21,7 +21,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
     status: "success",
     requestedAt: req.requestedAt,
     message: "User created successfully!",
-    data: user,
+    user,
   });
 });
 

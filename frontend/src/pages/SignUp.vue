@@ -108,6 +108,7 @@ export default {
       role: "",
 
       isPasswordVisible: false,
+
       emailError: "",
       usernameError: "",
       phoneError: "",
@@ -118,21 +119,21 @@ export default {
   methods: {
     getUsernameError() {
       this.usernameError =
-        this.username.length < 3 && this.username
+        this.username && this.username.length < 3
           ? "Username must be at least 3 characters."
           : "";
     },
     getEmailError() {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       this.emailError =
-        !emailPattern.test(this.email) && this.email
+        this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
           : "";
     },
     getPhoneError() {
       const phonePattern = /^\d{10}$/;
       this.phoneError =
-        !phonePattern.test(this.phone) && this.phone
+        this.phone && !phonePattern.test(this.phone)
           ? "Phone number must be 10 digits."
           : "";
     },
@@ -140,7 +141,7 @@ export default {
       const passwordPattern =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
       this.passwordError =
-        !passwordPattern.test(this.password) && this.password
+        this.password && !passwordPattern.test(this.password)
           ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
           : "";
     },
@@ -180,9 +181,9 @@ export default {
             transition: "flip",
           });
 
-          console.log(res);
+          this.$store.commit("setUser", res.data);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
 
-          localStorage.setItem("user", JSON.stringify(res.data.data));
           setTimeout(() => {
             this.$router.replace("/dashboard");
           }, 1500);
