@@ -147,7 +147,7 @@ export default {
           console.log(document.cookie);
 
           const res = await axios.post(
-            `http://127.0.0.1:3000/api/v1/auth/change-password`,
+            `http://192.1.200.113:3000/api/v1/auth/change-password`,
             payload,
             {
               headers: {
@@ -157,7 +157,7 @@ export default {
           );
 
           toast.success(res.data?.message, {
-            autoClose: 2000,
+            autoClose: 1000,
             closeOnClick: false,
             pauseOnHover: true,
             position: "top-center",
@@ -166,13 +166,13 @@ export default {
 
           setTimeout(() => {
             this.$router.replace("/dashboard");
-          }, 3000);
+          }, 1500);
         }
       } catch (error) {
         console.log(error.response?.data?.message);
         // alert(error.response?.data?.message);
         toast.error(error.response?.data?.message || error.message, {
-          autoClose: 2000,
+          autoClose: 1000,
           closeOnClick: false,
           pauseOnHover: true,
           position: "top-center",

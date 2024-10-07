@@ -67,12 +67,13 @@ nav {
   width: 100%;
   z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: white;
 }
 
 nav .nav-bar {
   position: relative;
   height: 100%;
-  max-width: 1000px;
+  max-width: 900px;
   width: 100%;
   margin: 0 auto;
   padding: 0 30px;
