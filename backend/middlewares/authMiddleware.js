@@ -9,10 +9,10 @@ const protect = async (req, res, next) => {
     // const testToken = req.headers.authorization;
 
     //FOR POSTMAN
-    const token = req.headers.cookie?.split("=")[1];
+    // const token = req.headers.cookie?.split("=")[1];
 
     //FOR BROWSER
-    // const token = req.headers.cookies;
+    const token = req.headers.cookies;
 
     // if (testToken && testToken.startsWith("Bearer ")) {
     //   token = testToken.split(" ")[1];

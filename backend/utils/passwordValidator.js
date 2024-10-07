@@ -5,7 +5,7 @@ const validatePassword = (password) => {
   const hasNumber = /\d/.test(password);
   const hasSpecialChar = /[!@#$%^&*.?]/.test(password);
 
-  const msg = `Password must contain : \n*Uppercase  \n*Lowercase  \n*Special-Characters  \n*Digits`;
+  const msg = `PASSWORD MUST CONTAIN :- \n*At least 8 Characters \n*Special Characters \n*Uppercase  \n*Lowercase    \n*Digits`;
 
   if (
     password.length < minLength ||

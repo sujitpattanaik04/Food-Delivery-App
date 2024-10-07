@@ -79,8 +79,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import TheHeader from "../components/UI/TheHeader.vue";
+import axios from "axios";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -144,7 +146,7 @@ export default {
           const authToken = document.cookie.split("=")[1];
           console.log(document.cookie);
 
-          await axios.post(
+          const res = await axios.post(
             `http://127.0.0.1:3000/api/v1/auth/change-password`,
             payload,
             {
@@ -153,11 +155,29 @@ export default {
               },
             }
           );
-          this.$router.replace("/dashboard");
+
+          toast.success(res.data?.message, {
+            autoClose: 2000,
+            closeOnClick: false,
+            pauseOnHover: true,
+            position: "top-center",
+            transition: "flip",
+          });
+
+          setTimeout(() => {
+            this.$router.replace("/dashboard");
+          }, 3000);
         }
       } catch (error) {
-        console.log(error.response.data);
-        alert(error.response.data.message);
+        console.log(error.response?.data?.message);
+        // alert(error.response?.data?.message);
+        toast.error(error.response?.data?.message || error.message, {
+          autoClose: 2000,
+          closeOnClick: false,
+          pauseOnHover: true,
+          position: "top-center",
+          transition: "flip",
+        });
       }
     },
   },

@@ -39,7 +39,7 @@ const forgotPasswordService = async (req) => {
 
   const user = await fetchUserByEmail(email);
 
-  if (!user) throw new CustomError("User the given email is not found!", 404);
+  if (!user) throw new CustomError("User the given email is not found !!", 404);
 
   const resetToken = await user.createResetPasswordToken();
 
@@ -78,7 +78,7 @@ const resetPasswordService = async (req) => {
 
   const user = await fetchUserByResetToken(token);
 
-  if (!user) throw new CustomError("Token is invalid or has expired!", 400);
+  if (!user) throw new CustomError("Token is invalid or has expired !!", 400);
 
   user.password = newPassword;
   user.passwordResetToken = null;
@@ -100,11 +100,11 @@ const changePasswordService = async (req) => {
   );
 
   if (!isPasswordValid)
-    throw new CustomError("Please provide valid old password!", 400);
+    throw new CustomError("Please provide valid Old Password !!", 400);
 
   if (newPassword !== confirmPassword)
     throw new CustomError(
-      "new password and confirm password must be same!",
+      "New Password and Confirm Password must be same !!",
       400
     );
 

@@ -7,7 +7,7 @@
         <input
           :type="isPasswordVisible ? 'text' : 'password'"
           placeholder="New Password"
-          v-model="password"
+          v-model="newPassword"
           required
           @blur="getPasswordError"
         />
@@ -33,6 +33,8 @@
 
 <script>
 import axios from "axios";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   data() {
@@ -61,16 +63,33 @@ export default {
             newPassword: this.newPassword,
           };
 
-          await axios.post(
+          const res = await axios.post(
             `http://127.0.0.1:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
             payload
           );
 
-          this.$router.replace("/login");
+          toast.success(res.data?.message, {
+            autoClose: 2000,
+            closeOnClick: false,
+            pauseOnHover: true,
+            position: "top-center",
+            transition: "flip",
+          });
+
+          setTimeout(() => {
+            this.$router.replace("/login");
+          }, 3000);
         }
       } catch (error) {
-        console.log(error.response.data);
-        alert(error.response.data.message);
+        console.log(error.response?.data?.message);
+        // alert(error.response?.data?.message);
+        toast.error(error.response?.data?.message || error.message, {
+          autoClose: 2000,
+          closeOnClick: false,
+          pauseOnHover: true,
+          position: "top-center",
+          transition: "flip",
+        });
       }
     },
   },

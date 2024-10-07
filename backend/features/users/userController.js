@@ -2,13 +2,13 @@ const { registerUserService, deleteUserService } = require("./userService.js");
 const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
 
 const registerUser = asyncErrorHandler(async (req, res) => {
-  const { user: newUser, token } = await registerUserService(req.body);
+  const { user, token } = await registerUserService(req.body);
 
-  delete newUser.dataValues.password;
-  delete newUser.dataValues.deletedAt;
-  delete newUser.dataValues.passwordChangedAt;
-  delete newUser.dataValues.passwordResetToken;
-  delete newUser.dataValues.passwordResetTokenExpires;
+  delete user.dataValues.password;
+  delete user.dataValues.deletedAt;
+  delete user.dataValues.passwordChangedAt;
+  delete user.dataValues.passwordResetToken;
+  delete user.dataValues.passwordResetTokenExpires;
 
   const options = {
     maxAge: process.env.LOGIN_EXPIRES_IN,
@@ -21,7 +21,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
     status: "success",
     requestedAt: req.requestedAt,
     message: "User created successfully!",
-    data: newUser,
+    data: user,
   });
 });
 

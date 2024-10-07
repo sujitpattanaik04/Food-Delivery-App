@@ -38,11 +38,6 @@ module.exports = (connectDB) => {
       password: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Password cannot be empty!",
-          },
-        },
       },
       phone: {
         type: DataTypes.STRING(15),
@@ -72,15 +67,17 @@ module.exports = (connectDB) => {
       timestamps: true,
       paranoid: true,
       hooks: {
-        beforeValidate: async (user) => {
-          console.log(user.password);
-          validatePassword(user.password);
-          console.log(78);
-        },
+        // beforeValidate: async (user) => {
+        //   console.log(user.password);
+        //   validatePassword(user.password);
+        //   console.log(78);
+        // },
         beforeCreate: async (user) => {
+          validatePassword(user.password);
           user.password = await bcrypt.hash(user.password, 10);
         },
         beforeUpdate: async (user) => {
+          validatePassword(user.password);
           user.password = await bcrypt.hash(user.password, 10);
         },
       },
@@ -100,8 +97,6 @@ module.exports = (connectDB) => {
       .digest("hex");
 
     this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
-
-    console.log(resetToken);
 
     return resetToken;
   };

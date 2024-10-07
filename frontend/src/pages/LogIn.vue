@@ -67,9 +67,11 @@
 </template>
 
 <script>
+import TheHeader from "../components/UI/TheHeader.vue";
 import axios from "axios";
 import Cookie from "js-cookie";
-import TheHeader from "../components/UI/TheHeader.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -110,7 +112,7 @@ export default {
     },
     async forgotPassword() {
       if (!this.email) {
-        alert("Please provide your email address!");
+        alert("Please provide your email address !!");
       } else {
         const response = await axios.post(
           "http://127.0.0.1:3000/api/v1/auth/forgot-password",
@@ -131,18 +133,34 @@ export default {
             role: this.role,
           };
 
-          const response = await axios.post(
+          const res = await axios.post(
             "http://127.0.0.1:3000/api/v1/auth/login",
             payload
           );
 
-          Cookie.set("authToken", response.data.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.data.user));
-          this.$router.replace("/dashboard");
+          toast.success(res.data?.message, {
+            autoClose: 2000,
+            closeOnClick: false,
+            pauseOnHover: true,
+            position: "top-center",
+            transition: "flip",
+          });
+
+          localStorage.setItem("user", JSON.stringify(res.data.data.user));
+          Cookie.set("authToken", res.data.data.token);
+          setTimeout(() => {
+            this.$router.replace("/dashboard");
+          }, 3000);
         }
       } catch (error) {
-        console.log(error);
-        alert(error.response.data.message);
+        console.log(error.response?.data?.message);
+        toast.error(error.response?.data?.message || error.message, {
+          autoClose: 2000,
+          closeOnClick: false,
+          pauseOnHover: true,
+          position: "top-center",
+          transition: "flip",
+        });
       }
     },
   },

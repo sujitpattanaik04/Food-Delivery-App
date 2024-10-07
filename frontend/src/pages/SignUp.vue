@@ -93,6 +93,7 @@
 import TheHeader from "../components/UI/TheHeader.vue";
 import axios from "axios";
 import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -172,30 +173,28 @@ export default {
           );
 
           toast.success(res.data?.message, {
-            icon: false,
-            icon: <i style={{ fontSize: "16px" }} class="custom-icon" />,
-            type: "success",
-            autoClose: 3000,
+            autoClose: 2000,
             closeOnClick: false,
-            pauseOnHover: false,
-            position: "top-right",
+            pauseOnHover: true,
+            position: "top-center",
             transition: "flip",
-            dangerouslyHTMLString: true,
           });
 
-          localStorage.setItem("user", JSON.stringify(res.data?.data));
-          this.$router.replace("/dashboard");
+          console.log(res);
+
+          localStorage.setItem("user", JSON.stringify(res.data.data));
+          setTimeout(() => {
+            this.$router.replace("/dashboard");
+          }, 3000);
         }
       } catch (error) {
         console.log(error.response?.data?.message);
         toast.error(error.response?.data?.message || error.message, {
-          type: "error",
-          autoClose: 3000,
+          autoClose: 2000,
           closeOnClick: false,
-          pauseOnHover: false,
-          position: "top-right",
+          pauseOnHover: true,
+          position: "top-center",
           transition: "flip",
-          dangerouslyHTMLString: true,
         });
       }
     },

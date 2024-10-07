@@ -18,7 +18,7 @@ const loginUser = asyncErrorHandler(async (req, res) => {
   res.status(200).json({
     status: "success",
     requestedAt: req.requestedAt,
-    message: "You have logged in successfully!",
+    message: "You have logged in successfully",
     data: { user, token },
   });
 });
