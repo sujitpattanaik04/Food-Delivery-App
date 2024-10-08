@@ -124,6 +124,7 @@ export default {
           : "";
     },
 
+    getPasswordMatchError() {},
     toggleOldPasswordVisibility() {
       this.isOldPasswordVisible = !this.isOldPasswordVisible;
     },
