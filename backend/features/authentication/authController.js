@@ -13,7 +13,7 @@ const loginUser = asyncErrorHandler(async (req, res) => {
     maxAge: process.env.LOGIN_EXPIRES_IN,
     httpOnly: true, // Prevent client-side access
     secure: true, // Send cookie only over HTTPS
-    sameSite: "strict", // Adjust as needed for cross-site scenarios
+    // sameSite: "strict", // Adjust as needed for cross-site scenarios
   };
 
   res.cookie("authToken", token, options);
@@ -56,18 +56,33 @@ const changePassword = asyncErrorHandler(async (req, res) => {
   });
 });
 
-// const logoutUser = asyncErrorHandler(async (req, res) => {
-//   res.clearCookie("authToken");
-//   res.status(200).json({
-//     status: "success",
-//     requestedAt: req.requestedAt,
-//     message: "Logout successful!",
-//   });
-// });
+const logoutUser = asyncErrorHandler(async (req, res) => {
+  // res.clearCookie("authToken", { path: "/" });
+  // res.status(200).json({
+  //   status: "success",
+  //   requestedAt: req.requestedAt,
+  //   message: "Logout successfully",
+  // });
+
+  res.clearCookie("authToken", {
+    httpOnly: true, // Should match the settings used when setting the cookie
+    secure: true, // Should match the settings used when setting the cookie
+    // sameSite: "strict", // Should match the settings used when setting the cookie
+    path: "/", // Specify the path if it was set when creating the cookie
+  });
+
+  // res.clearCookie("authToken");
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "Logout successfully",
+  });
+});
 
 module.exports = {
   loginUser,
   forgotPassword,
   resetPassword,
   changePassword,
+  logoutUser,
 };

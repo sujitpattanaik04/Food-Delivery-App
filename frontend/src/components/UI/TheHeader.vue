@@ -37,7 +37,7 @@ export default {
   methods: {
     logout() {
       document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      localStorage.clear();
+      console.log(document.cookie);
 
       this.$router.replace("/login");
     },

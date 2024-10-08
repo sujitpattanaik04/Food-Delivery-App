@@ -6,6 +6,7 @@ import DashBoard from "./pages/DashBoard.vue";
 import ForgotPassword from "./pages/ForgotPassword.vue";
 import ResetPassword from "./pages/ResetPassword.vue";
 import ChangePassword from "./pages/ChangePassword.vue";
+import PageNotFound from "./pages/PageNotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: "/forgot-password", component: ForgotPassword },
     { path: "/reset-password/:token", component: ResetPassword },
     { path: "/change-password", component: ChangePassword },
+    { path: "/:notfound(.*)", component: PageNotFound },
   ],
 });
 

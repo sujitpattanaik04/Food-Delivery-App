@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookie from "js-cookie";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
@@ -8,7 +7,10 @@ export default {
     try {
       const res = await axios.post(
         "http://192.1.200.113:3000/api/v1/users/signup",
-        payload
+        payload,
+        {
+          withCredentials: true,
+        }
       );
 
       toast.success(res.data?.message, {
@@ -21,7 +23,11 @@ export default {
 
       context.commit("setUser", res.data);
       // localStorage.setItem("user", JSON.stringify(res.data.user));
+      // Cookie.set("authToken", res.data.data.token);
     } catch (error) {
+      // headers: {
+      //   cookies: authToken,
+      // },
       console.log(error.response?.data?.message);
       toast.error(error.response?.data?.message || error.message, {
         autoClose: 1000,
@@ -37,10 +43,10 @@ export default {
     try {
       const res = await axios.post(
         "http://192.1.200.113:3000/api/v1/auth/login",
-        payload
-        // {
-        //   withCredentials: true,
-        // }
+        payload,
+        {
+          withCredentials: true,
+        }
       );
 
       toast.success(res.data?.message, {
@@ -53,7 +59,7 @@ export default {
 
       context.commit("setUser", res.data.data);
       // localStorage.setItem("user", JSON.stringify(res.data.data.user));
-      Cookie.set("authToken", res.data.data.token);
+      // Cookie.set("authToken", res.data.data.token);
     } catch (error) {
       console.log(error.response?.data?.message);
       toast.error(error.response?.data?.message || error.message, {
@@ -72,17 +78,16 @@ export default {
       if (payload.newPassword !== payload.confirmPassword)
         throw new Error("New Password and Confirm Password must be same !!");
 
-      const authToken = document.cookie.split("=")[1];
+      console.log(document.cookie);
 
-      if (!authToken) throw new Error("Authorization token not found !!");
+      // const authToken = document.cookie.split("=")[1];
+
+      // if (!authToken) throw new Error("Authorization token not found !!");
 
       res = await axios.post(
         `http://192.1.200.113:3000/api/v1/auth/change-password`,
         payload,
         {
-          headers: {
-            cookies: authToken,
-          },
           withCredentials: true,
         }
       );
@@ -112,7 +117,10 @@ export default {
     try {
       const res = await axios.post(
         "http://192.1.200.113:3000/api/v1/auth/forgot-password",
-        payload.email
+        payload.email,
+        {
+          withCredentials: true,
+        }
       );
 
       toast.success(res.data?.message, {
