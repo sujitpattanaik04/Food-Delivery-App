@@ -147,7 +147,7 @@ export default {
           });
 
           this.$store.commit("setUser", res.data.data);
-          localStorage.setItem("user", JSON.stringify(res.data.data.user));
+          // localStorage.setItem("user", JSON.stringify(res.data.data.user));
           Cookie.set("authToken", res.data.data.token);
 
           setTimeout(() => {

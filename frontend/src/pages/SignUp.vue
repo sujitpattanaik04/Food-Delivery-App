@@ -169,9 +169,10 @@ export default {
           };
 
           const res = await axios.post(
-            "http://192.1.200.113:3000/api/v1/users/signup",
+            "http://localhost:3000/api/v1/users/signup",
             payload
           );
+
 
           toast.success(res.data?.message, {
             autoClose: 1000,
@@ -182,7 +183,7 @@ export default {
           });
 
           this.$store.commit("setUser", res.data);
-          localStorage.setItem("user", JSON.stringify(res.data.user));
+          // localStorage.setItem("user", JSON.stringify(res.data.user));
 
           setTimeout(() => {
             this.$router.replace("/dashboard");

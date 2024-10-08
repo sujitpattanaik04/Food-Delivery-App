@@ -13,7 +13,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://192.1.200.113:8080",
+    // origin: "http://192.1.200.113:8080",
+    origin: "http://localhost:8080",
     credentials: true,
   })
 );

@@ -16,7 +16,10 @@ export default {
     };
   },
   created() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = this.$store.commit("getUser");
+
+    console.log(user);
+
     this.username = user.username;
   },
 };

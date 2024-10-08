@@ -9,7 +9,7 @@ export default {
   state() {
     return {
       user: null,
-      // authToken:
+      authToken: null,
     };
   },
   getters,
