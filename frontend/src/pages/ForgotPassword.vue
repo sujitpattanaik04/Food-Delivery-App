@@ -1,12 +1,226 @@
 <template>
-  <h1>
-    We have received the forgot password request. We have sent the reset
-    password link to your mail id. Kindly check your mail.
-  </h1>
+  <section>
+    <the-header></the-header>
+    <div class="wrapper">
+      <div class="title"><span>Forgot Password</span></div>
+      <form @submit.prevent="handleSubmit">
+        <div class="row" :class="{ 'input-error': emailError }">
+          <i class="bx bx-envelope"></i>
+          <input
+            type="text"
+            placeholder="Enter Your Email"
+            v-model="email"
+            required
+            @blur="getEmailError"
+          />
+          <span v-if="emailError" class="error-message">{{ emailError }}</span>
+        </div>
+
+        <div class="row button">
+          <input type="submit" value="Send Password Reset Request" />
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      email: "",
+      emailError: "",
+    };
+  },
+  methods: {
+    getEmailError() {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      this.emailError =
+        this.email && !emailPattern.test(this.email)
+          ? "Please enter a valid email."
+          : "";
+    },
+    async handleSubmit() {
+      if (!this.emailError) {
+        const payload = {
+          email: this.email,
+        };
+        this.$store.dispatch("forgotPassword", payload);
+      }
+    },
+  },
+};
+</script>
+
 <style scoped>
-h1 {
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.wrapper {
+  margin-top: 100px;
+  max-width: 500px;
+  width: 100%;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-left: 34vw;
+}
+
+.wrapper .title {
+  height: 120px;
   color: #609966;
+  font-size: 30px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
+  margin-inline: 15px;
+}
+
+.wrapper form {
+  padding: 25px 35px;
+}
+
+.wrapper form .row {
+  height: 60px;
+  margin-top: 15px;
+  position: relative;
+}
+
+.wrapper form .row input,
+.wrapper form .row select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding-left: 70px;
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.wrapper form .row select {
+  padding-right: 30px;
+  appearance: none;
+  color: #666;
+}
+
+.wrapper form .row select option {
+  color: #333;
+}
+
+.wrapper form .row select option[value=""] {
+  color: rgba(51, 51, 51, 0.7);
+}
+
+form .row input:focus,
+form .row select:focus {
+  border-color: #609966;
+}
+
+form .row input::placeholder {
+  color: #999;
+}
+
+.wrapper form .row i {
+  position: absolute;
+  width: 55px;
+  height: 100%;
+  color: grey;
+  font-size: 22px;
+  border: 0.5px solid rgba(128, 128, 128, 0.337);
+  border-radius: 5px 0 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper form .row .toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: transparent;
+  color: grey;
+  font-size: 28px;
+  border: none;
+}
+
+.wrapper form .row .arrow {
+  position: absolute;
+  right: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: grey;
+  font-size: 18px;
+}
+
+.wrapper form .row .arrow:hover {
+  cursor: pointer;
+}
+
+.wrapper form .pass {
+  margin-top: 12px;
+}
+
+.wrapper form .pass a {
+  margin-left: -275px;
+  color: #609966;
+  font-size: 17px;
+  text-decoration: none;
+}
+.wrapper form .pass a:hover {
+  text-decoration: underline;
+}
+
+.wrapper form .button input {
+  margin-top: 10px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 0px;
+  background: #609966;
+  border: 1px solid #609966;
+  cursor: pointer;
+}
+
+form .button input:hover {
+  background: #609966;
+}
+
+.wrapper form .signup-link {
+  text-align: center;
+  margin-top: 45px;
+  font-size: 17px;
+}
+
+.wrapper form .signup-link a {
+  color: #609966;
+  text-decoration: none;
+}
+
+form .signup-link a:hover {
+  text-decoration: underline;
+}
+
+.wrapper form .row .input-error input,
+.wrapper form .row .input-error select {
+  border-radius: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 15px;
+  position: absolute;
+  width: 450px;
 }
 </style>

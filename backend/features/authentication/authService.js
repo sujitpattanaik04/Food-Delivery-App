@@ -102,12 +102,6 @@ const changePasswordService = async (req) => {
   if (!isPasswordValid)
     throw new CustomError("Please provide valid Old Password !!", 400);
 
-  if (newPassword !== confirmPassword)
-    throw new CustomError(
-      "New Password and Confirm Password must be same !!",
-      400
-    );
-
   user.password = newPassword;
   user.passwordResetToken = null;
   user.passwordResetTokenExpires = null;

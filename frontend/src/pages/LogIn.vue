@@ -52,7 +52,7 @@
         </div>
 
         <div class="pass">
-          <a @click="forgotPassword">Forgot password?</a>
+          <router-link to="/forgot-password">Forgot password?</router-link>
         </div>
 
         <div class="row button">
@@ -68,10 +68,6 @@
 
 <script>
 import TheHeader from "../components/UI/TheHeader.vue";
-import axios from "axios";
-import Cookie from "js-cookie";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -110,59 +106,19 @@ export default {
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
-    async forgotPassword() {
-      if (!this.email) {
-        alert("Please provide your email address !!");
-      } else {
-        const res = await axios.post(
-          "http://localhost:3000/api/v1/auth/forgot-password",
-          { email: this.email }
-        );
-
-        if (res.data.status === "success") {
-          this.$router.push("/forgot-password");
-        }
-      }
-    },
     async handleSubmit() {
-      try {
-        if (!this.emailError && !this.passwordError && !this.roleError) {
-          const payload = {
-            email: this.email,
-            password: this.password,
-            role: this.role,
-          };
+      if (!this.emailError && !this.passwordError && !this.roleError) {
+        const payload = {
+          email: this.email,
+          password: this.password,
+          role: this.role,
+        };
 
-          const res = await axios.post(
-            "http://192.1.200.113:3000/api/v1/auth/login",
-            payload
-          );
+        this.$store.dispatch("login", payload);
 
-          toast.success(res.data?.message, {
-            autoClose: 1000,
-            closeOnClick: false,
-            pauseOnHover: true,
-            position: "top-center",
-            transition: "flip",
-          });
-
-          this.$store.commit("setUser", res.data.data);
-          // localStorage.setItem("user", JSON.stringify(res.data.data.user));
-          Cookie.set("authToken", res.data.data.token);
-
-          setTimeout(() => {
-            this.$router.replace("/dashboard");
-          }, 1500);
-        }
-      } catch (error) {
-        console.log(error.response?.data?.message);
-        toast.error(error.response?.data?.message || error.message, {
-          autoClose: 1000,
-          closeOnClick: false,
-          pauseOnHover: true,
-          position: "top-center",
-          transition: "flip",
-        });
+        setTimeout(() => {
+          this.$router.replace("/dashboard");
+        }, 1500);
       }
     },
   },

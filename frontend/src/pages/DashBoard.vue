@@ -16,11 +16,9 @@ export default {
     };
   },
   created() {
-    const user = this.$store.commit("getUser");
-
-    console.log(user);
-
-    this.username = user.username;
+    const user = this.$store.getters.getUser;
+    if (!user) this.$router.replace("/");
+    this.username = user ? user.username : "";
   },
 };
 </script>

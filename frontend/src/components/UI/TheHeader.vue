@@ -38,12 +38,12 @@ export default {
     logout() {
       document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       localStorage.clear();
-      
+
       this.$router.replace("/login");
     },
   },
   created() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = this.$store.getters.getUser;
     this.user = user;
   },
 };

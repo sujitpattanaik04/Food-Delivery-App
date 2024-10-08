@@ -80,9 +80,6 @@
 
 <script>
 import TheHeader from "../components/UI/TheHeader.vue";
-import axios from "axios";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -103,6 +100,12 @@ export default {
       newPasswordError: "",
       confirmPasswordError: "",
     };
+  },
+  created() {
+    const user = this.$store.getters.getUser;
+    if (!user) {
+      this.$router.replace("/");
+    }
   },
   methods: {
     getOldPasswordError() {
@@ -134,59 +137,21 @@ export default {
     toggleConfirmPasswordVisibility() {
       this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
     },
-
-    created() {
-      const user = this.$store.commit("getUser");
-      console.log(user);
-
-      if (!user) {
-        this.$router.replace("/");
-      }
-    },
-
     async handleSubmit() {
-      try {
-        if (!this.passwordError) {
-          const payload = {
-            oldPassword: this.oldPassword,
-            newPassword: this.newPassword,
-            confirmPassword: this.confirmPassword,
-          };
+      if (!this.passwordError) {
+        const payload = {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword,
+          confirmPassword: this.confirmPassword,
+        };
 
-          const authToken = document.cookie.split("=")[1];
+        const res = await this.$store.dispatch("changePassword", payload);
 
-          const res = await axios.post(
-            `http://192.1.200.113:3000/api/v1/auth/change-password`,
-            payload,
-            {
-              headers: {
-                cookies: authToken,
-              },
-            }
-          );
-
-          toast.success(res.data?.message, {
-            autoClose: 1000,
-            closeOnClick: false,
-            pauseOnHover: true,
-            position: "top-center",
-            transition: "flip",
-          });
-
-          setTimeout(() => {
+        setTimeout(() => {
+          if (res?.status === "success") {
             this.$router.replace("/dashboard");
-          }, 1500);
-        }
-      } catch (error) {
-        console.log(error.response?.data?.message);
-        // alert(error.response?.data?.message);
-        toast.error(error.response?.data?.message || error.message, {
-          autoClose: 1000,
-          closeOnClick: false,
-          pauseOnHover: true,
-          position: "top-center",
-          transition: "flip",
-        });
+          }
+        }, 2500);
       }
     },
   },
