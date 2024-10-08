@@ -9,7 +9,7 @@
           <input
             type="text"
             placeholder="Username"
-            v-model="username"
+            v-model.trim="username"
             required
             @blur="getUsernameError"
           />
@@ -24,7 +24,7 @@
           <input
             type="text"
             placeholder="Email"
-            v-model="email"
+            v-model.trim="email"
             required
             @blur="getEmailError"
           />
@@ -36,7 +36,7 @@
           <input
             type="text"
             placeholder="Phone"
-            v-model="phone"
+            v-model.trim.number="phone"
             required
             @blur="getPhoneError"
           />
@@ -48,7 +48,7 @@
           <input
             :type="isPasswordVisible ? 'text' : 'password'"
             placeholder="Password"
-            v-model="password"
+            v-model.trim="password"
             required
             @blur="getPasswordError"
           />
@@ -117,6 +117,12 @@ export default {
       roleError: "",
       downArrow: true,
     };
+  },
+  created() {
+    const user = this.$store.getters.getUser;
+    if (user) {
+      this.$router.replace("/dashboard");
+    }
   },
   methods: {
     getUsernameError() {

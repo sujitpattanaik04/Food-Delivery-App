@@ -7,6 +7,7 @@
         <li class="center">
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
+        <span>{{ user?.username }}</span>
         <li class="center">
           <router-link to="/change-password">Change Password</router-link>
         </li>
@@ -19,6 +20,7 @@
         <li class="center">
           <router-link to="/login">Login</router-link>
         </li>
+        <span>{{ user?.username }}</span>
         <li class="center">
           <router-link to="/signup">Signup</router-link>
         </li>
@@ -34,17 +36,14 @@ export default {
       user: null,
     };
   },
+  created() {
+    this.user = this.$store.getters.getUser;
+  },
   methods: {
     logout() {
-      document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      console.log(document.cookie);
-
+      this.$store.commit("removeUser");
       this.$router.replace("/login");
     },
-  },
-  created() {
-    const user = this.$store.getters.getUser;
-    this.user = user;
   },
 };
 </script>

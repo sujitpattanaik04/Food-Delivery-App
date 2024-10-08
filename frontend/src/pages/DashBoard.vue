@@ -17,7 +17,7 @@ export default {
   },
   created() {
     const user = this.$store.getters.getUser;
-    if (!user) this.$router.replace("/");
+    if (!user) this.$router.replace("/signup");
     this.username = user ? user.username : "";
   },
 };

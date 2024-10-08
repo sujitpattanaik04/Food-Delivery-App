@@ -7,7 +7,7 @@
         <input
           :type="isPasswordVisible ? 'text' : 'password'"
           placeholder="New Password"
-          v-model="newPassword"
+          v-model.trim="newPassword"
           required
           @blur="getPasswordError"
         />
@@ -264,7 +264,7 @@ form .signup-link a:hover {
 
 .wrapper form .row .input-error input,
 .wrapper form .row .input-error select {
-  border-radius: 2px solid red;
+  border: 1.5px solid red;
 }
 
 .error-message {

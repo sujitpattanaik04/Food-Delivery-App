@@ -6,7 +6,8 @@ export default {
   async signup(context, payload) {
     try {
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/users/signup",
+        // "http://192.1.200.113:3000/api/v1/users/signup",
+        "http://localhost:3000/api/v1/users/signup",
         payload,
         {
           withCredentials: true,
@@ -42,7 +43,8 @@ export default {
   async login(context, payload) {
     try {
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/auth/login",
+        // "http://192.1.200.113:3000/api/v1/auth/login",
+        "http://localhost:3000/api/v1/auth/login",
         payload,
         {
           withCredentials: true,
@@ -85,7 +87,8 @@ export default {
       // if (!authToken) throw new Error("Authorization token not found !!");
 
       res = await axios.post(
-        `http://192.1.200.113:3000/api/v1/auth/change-password`,
+        // `http://192.1.200.113:3000/api/v1/auth/change-password`,
+        "http://localhost:3000/api/v1/auth/change-password",
         payload,
         {
           withCredentials: true,
@@ -116,7 +119,8 @@ export default {
   async forgotPassword(_, payload) {
     try {
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/auth/forgot-password",
+        // "http://192.1.200.113:3000/api/v1/auth/forgot-password",
+        "http://localhost:3000/api/v1/auth/forgot-password",
         payload.email,
         {
           withCredentials: true,

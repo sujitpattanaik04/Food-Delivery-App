@@ -9,7 +9,7 @@
           <input
             type="text"
             placeholder="Enter Your Email"
-            v-model="email"
+            v-model.trim="email"
             required
             @blur="getEmailError"
           />
@@ -214,7 +214,7 @@ form .signup-link a:hover {
 
 .wrapper form .row .input-error input,
 .wrapper form .row .input-error select {
-  border-radius: 2px solid red;
+  border: 1.5px solid red;
 }
 
 .error-message {

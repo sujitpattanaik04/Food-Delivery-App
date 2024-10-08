@@ -9,7 +9,7 @@
           <input
             :type="isOldPasswordVisible ? 'text' : 'password'"
             placeholder="Old Password"
-            v-model="oldPassword"
+            v-model.trim="oldPassword"
             required
             @blur="getOldPasswordError"
           />
@@ -31,7 +31,7 @@
           <input
             :type="isNewPasswordVisible ? 'text' : 'password'"
             placeholder="New Password"
-            v-model="newPassword"
+            v-model.trim="newPassword"
             required
             @blur="getNewPasswordError"
           />
@@ -53,7 +53,7 @@
           <input
             :type="isConfirmPasswordVisible ? 'text' : 'password'"
             placeholder="Confirm Password"
-            v-model="confirmPassword"
+            v-model.trim="confirmPassword"
             required
             @blur="getConfirmPasswordError"
           />
@@ -327,7 +327,7 @@ form .signup-link a:hover {
 
 .wrapper form .row .input-error input,
 .wrapper form .row .input-error select {
-  border-radius: 2px solid red;
+  border: 1.5px solid red;
 }
 
 .error-message {

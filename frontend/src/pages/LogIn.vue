@@ -9,7 +9,7 @@
           <input
             type="text"
             placeholder="Email"
-            v-model="email"
+            v-model.trim="email"
             required
             @blur="getEmailError"
           />
@@ -21,7 +21,7 @@
           <input
             :type="isPasswordVisible ? 'text' : 'password'"
             placeholder="Password"
-            v-model="password"
+            v-model.trim="password"
             required
             @blur="getPasswordError"
           />
@@ -293,7 +293,7 @@ form .signup-link a:hover {
 
 .wrapper form .row .input-error input,
 .wrapper form .row .input-error select {
-  border-radius: 2px solid red;
+  border: 1.5px solid red;
 }
 
 .error-message {
