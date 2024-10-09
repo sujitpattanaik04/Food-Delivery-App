@@ -6,17 +6,12 @@ const User = db.User;
 const protect = async (req, res, next) => {
   try {
     // 1. Read the token and check if it exists
-    // const testToken = req.headers.authorization;
 
     //FOR POSTMAN
     // const token = req.headers.cookie?.split("=")[1];
 
     //FOR BROWSER
-    const token = req.headers.cookies;
-
-    // if (testToken && testToken.startsWith("Bearer ")) {
-    //   token = testToken.split(" ")[1];
-    // }
+    const token = req.cookies.authToken;
 
     if (!token) {
       throw new Error("You are not logged in!");

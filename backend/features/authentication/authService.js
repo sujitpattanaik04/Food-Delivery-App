@@ -82,6 +82,9 @@ const resetPasswordService = async (req) => {
 
   user.password = newPassword;
   user.passwordResetToken = null;
+  meta: {
+    login: false;
+  }
   user.passwordResetTokenExpires = null;
   user.passwordChangedAt = Date.now();
 
