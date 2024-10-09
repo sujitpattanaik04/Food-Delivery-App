@@ -36,7 +36,7 @@
           <input
             type="text"
             placeholder="Phone"
-            v-model.trim.number="phone"
+            v-model.trim="phone"
             required
             @blur="getPhoneError"
           />
@@ -132,7 +132,7 @@ export default {
           : "";
     },
     getEmailError() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+.[a-z]{2,}$/;
       this.emailError =
         this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
@@ -159,7 +159,7 @@ export default {
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
-    handleSubmit() {
+    async handleSubmit() {
       if (
         !this.usernameError &&
         !this.emailError &&
@@ -175,11 +175,9 @@ export default {
           role: this.role,
         };
 
-        this.$store.dispatch("signup", payload);
+        await this.$store.dispatch("signup", payload);
 
-        setTimeout(() => {
-          this.$router.replace("/dashboard");
-        }, 1500);
+        this.$router.replace("/dashboard");
       }
     },
   },

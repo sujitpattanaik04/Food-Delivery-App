@@ -114,11 +114,9 @@ export default {
           role: this.role,
         };
 
-        this.$store.dispatch("login", payload);
+        await this.$store.dispatch("login", payload);
 
-        setTimeout(() => {
-          this.$router.replace("/dashboard");
-        }, 1500);
+        this.$router.replace("/dashboard");
       }
     },
   },

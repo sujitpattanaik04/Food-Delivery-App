@@ -40,9 +40,11 @@ export default {
     this.user = this.$store.getters.getUser;
   },
   methods: {
-    logout() {
-      this.$store.commit("removeUser");
-      this.$router.replace("/login");
+    async logout() {
+      await this.$store.dispatch("logout");
+      setTimeout(() => {
+        this.$router.replace("/login");
+      }, 2500);
     },
   },
 };
