@@ -1,0 +1,4 @@
+[2024-10-11 12:03:21] ERROR: {"method":"GET","url":"/api/v1/users/get-user","status":"400","responseSize":"56","responseTime":"1.111\n"}
+[2024-10-11 12:03:22] ERROR: {"method":"GET","url":"/api/v1/users/get-user","status":"400","responseSize":"56","responseTime":"8.586\n"}
+[2024-10-11 12:03:22] ERROR: {"method":"GET","url":"/api/v1/users/get-user","status":"400","responseSize":"56","responseTime":"11.800\n"}
+[2024-10-11 12:03:22] ERROR: {"method":"GET","url":"/api/v1/users/get-user","status":"400","responseSize":"56","responseTime":"1.486\n"}

@@ -20,7 +20,6 @@
 
         <div class="row" :class="{ 'input-error': emailError }">
           <i class="bx bx-envelope"></i>
-
           <input
             type="text"
             placeholder="Email"
@@ -73,11 +72,15 @@
             @click="downArrow = !downArrow"
             @blur="getRoleError"
           >
-            <option value="" disabled selected>Select Role</option>
-            <option value="admin">Admin</option>
-            <option value="customer">Customer</option>
-            <option value="delivery partner">Delivery Partner</option>
-            <option value="restaurant owner">Restaurant Owner</option>
+            <option value="" disabled>Select Role</option>
+            <option value="admin" @click="downArrow = true">Admin</option>
+            <option value="customer" @click="downArrow = true">Customer</option>
+            <option value="delivery partner" @click="downArrow = true">
+              Delivery Partner
+            </option>
+            <option value="restaurant owner" @click="downArrow = true">
+              Restaurant Owner
+            </option>
           </select>
           <span v-if="downArrow" class="arrow">▼</span>
           <span v-else class="arrow">▲</span>
@@ -87,7 +90,7 @@
         <div class="row button">
           <input type="submit" value="Signup" />
         </div>
-        <div class="signup-link">
+        <div class="login-link">
           Already a member?
           <router-link to="/login" replace>Login now</router-link>
         </div>
@@ -119,15 +122,9 @@ export default {
       downArrow: true,
     };
   },
-  created() {
-    const user = this.$store.getters.getUser;
-    if (user) {
-      this.$router.replace("/dashboard");
-    }
-  },
   methods: {
     getUsernameError() {
-      const usernamePattern = /^[a-zA-Z]+$/;
+      const usernamePattern = /^[A-Za-z\s]+$/;
       this.usernameError =
         (this.username && this.username.length < 3
           ? "Username must be at least 3 characters."
@@ -182,9 +179,7 @@ export default {
 
         const res = await this.$store.dispatch("signup", payload);
 
-        if (res.data.status === "success") {
-          this.$router.replace("/dashboard");
-        }
+        if (res?.data?.status === "success") this.$router.replace("/dashboard");
       }
     },
   },
@@ -313,31 +308,33 @@ form .row input::placeholder {
 
 .wrapper form .button input {
   margin-top: 25px;
-  color: #fff;
+  color: #609966;
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: none;
   cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 form .button input:hover {
   background: #609966;
+  color: white;
 }
 
-.wrapper form .signup-link {
+.wrapper form .login-link {
   text-align: center;
   margin-top: 45px;
   font-size: 17px;
 }
 
-.wrapper form .signup-link a {
+.wrapper form .login-link a {
   color: #609966;
   text-decoration: none;
 }
 
-form .signup-link a:hover {
+form .login-link a:hover {
   text-decoration: underline;
 }
 

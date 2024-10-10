@@ -40,14 +40,24 @@
 
         <div class="row" :class="{ 'input-error': roleError }">
           <i class="bx bx-id-card"></i>
-          <select v-model="role" required @blur="getRoleError">
-            <option value="" disabled selected>Select Role</option>
-            <option value="admin">Admin</option>
-            <option value="customer">Customer</option>
-            <option value="delivery partner">Delivery Partner</option>
-            <option value="restaurant owner">Restaurant Owner</option>
+          <select
+            v-model="role"
+            required
+            @click="downArrow = !downArrow"
+            @blur="getRoleError"
+          >
+            <option value="" disabled>Select Role</option>
+            <option value="admin" @click="downArrow = true">Admin</option>
+            <option value="customer" @click="downArrow = true">Customer</option>
+            <option value="delivery partner" @click="downArrow = true">
+              Delivery Partner
+            </option>
+            <option value="restaurant owner" @click="downArrow = true">
+              Restaurant Owner
+            </option>
           </select>
-          <span class="arrow">▼</span>
+          <span v-if="downArrow" class="arrow">▼</span>
+          <span v-else class="arrow">▲</span>
           <span v-if="roleError" class="error-message">{{ roleError }}</span>
         </div>
 
@@ -85,11 +95,12 @@ export default {
       emailError: "",
       passwordError: "",
       roleError: "",
+      downArrow: false,
     };
   },
   methods: {
     getEmailError() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
       this.emailError =
         this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
@@ -117,17 +128,11 @@ export default {
           role: this.role,
         };
 
-        await this.$store.dispatch("login", payload);
+        const res = await this.$store.dispatch("login", payload);
 
-        this.$router.push("/dashboard");
+        if (res?.data?.status === "success") this.$router.replace("/dashboard");
       }
     },
-  },
-  created() {
-    const user = this.$store.commit("getUser");
-    if (user) {
-      this.$router.replace("/dashboard");
-    }
   },
 };
 </script>
@@ -249,11 +254,11 @@ form .row input::placeholder {
 }
 
 .wrapper form .pass {
-  margin-top: 12px;
+  margin-top: 5px;
 }
 
 .wrapper form .pass a {
-  margin-left: -275px;
+  margin-left: -280px;
   color: #609966;
   font-size: 17px;
   text-decoration: none;
@@ -264,17 +269,19 @@ form .row input::placeholder {
 
 .wrapper form .button input {
   margin-top: 25px;
-  color: #fff;
+  color: #609966;
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: none;
   cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 form .button input:hover {
   background: #609966;
+  color: white;
 }
 
 .wrapper form .signup-link {

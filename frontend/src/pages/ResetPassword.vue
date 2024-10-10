@@ -32,10 +32,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
-
 export default {
   data() {
     return {
@@ -57,37 +53,14 @@ export default {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
     async handleSubmit() {
-      try {
-        if (!this.passwordError) {
-          const payload = {
-            newPassword: this.newPassword,
-          };
+      if (!this.passwordError) {
+        const payload = {
+          newPassword: this.newPassword,
+        };
 
-          const res = await axios.post(
-            `http://192.1.200.113:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
-            payload
-          );
+        const res = await this.$store.dispatch("resetPassword", payload);
 
-          toast.success(res.data?.message, {
-            autoClose: 1000,
-            closeOnClick: false,
-            pauseOnHover: true,
-            position: "top-center",
-            transition: "flip",
-          });
-
-          this.$router.replace("/login");
-        }
-      } catch (error) {
-        console.log(error.response?.data?.message);
-        // alert(error.response?.data?.message);
-        toast.error(error.response?.data?.message || error.message, {
-          autoClose: 1000,
-          closeOnClick: false,
-          pauseOnHover: true,
-          position: "top-center",
-          transition: "flip",
-        });
+        if (res.data.status === "success") this.$router.replace("/login");
       }
     },
   },
@@ -202,62 +175,21 @@ form .row input::placeholder {
   font-size: 28px;
 }
 
-.wrapper form .row .arrow {
-  position: absolute;
-  right: 34px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #609966;
-  font-size: 18px;
-}
-
-.wrapper form .row .arrow:hover {
-  cursor: pointer;
-}
-
-.wrapper form .pass {
-  margin-top: 12px;
-}
-
-.wrapper form .pass a {
-  margin-left: -275px;
-  color: #609966;
-  font-size: 17px;
-  text-decoration: none;
-}
-
-.wrapper form .pass a:hover {
-  text-decoration: underline;
-}
-
 .wrapper form .button input {
-  margin-top: 10px;
-  color: #fff;
+  margin-top: 25px;
+  color: #609966;
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: none;
   cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 form .button input:hover {
   background: #609966;
-}
-
-.wrapper form .signup-link {
-  text-align: center;
-  margin-top: 45px;
-  font-size: 17px;
-}
-
-.wrapper form .signup-link a {
-  color: #609966;
-  text-decoration: none;
-}
-
-form .signup-link a:hover {
-  text-decoration: underline;
+  color: white;
 }
 
 .wrapper form .row .input-error input,
