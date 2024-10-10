@@ -76,9 +76,7 @@ export default {
             transition: "flip",
           });
 
-          setTimeout(() => {
-            this.$router.replace("/login");
-          }, 1500);
+          this.$router.replace("/login");
         }
       } catch (error) {
         console.log(error.response?.data?.message);

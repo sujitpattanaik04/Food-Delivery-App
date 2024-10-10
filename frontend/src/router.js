@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Store from "./store/index.js";
+import store from "./store/index.js";
 
 import SignUp from "./pages/SignUp.vue";
 import LogIn from "./pages/LogIn.vue";
@@ -39,18 +39,34 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!Store.getters.getUser;
+router.beforeEach(async (to, from, next) => {
+  // const isLoggedIn = store.state.isLoggedIn;
 
-  if (to.meta.login && !isAuthenticated) {
-    return next("/login");
+  // if (!isLoggedIn) {
+  //   await store.dispatch("getUserDetails");
+  // }
+  // if (isLoggedIn && !to.meta.login) {
+  //   return next("/dashboard");
+  // } else if (!isLoggedIn && to.meta.login) {
+  //   return next("/login");
+  // } else {
+  //   next();
+  // }
+
+  console.log(store.state.auth.isLoggedIn);
+
+  if (!store.state.auth.isLoggedIn) {
+    await store.dispatch("getUserDetails");
   }
-
-  if (!to.meta.login && isAuthenticated) {
-    return next("/dashboard");
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.state.auth.user) {
+      next();
+    } else {
+      next("/login");
+    }
+  } else {
+    next();
   }
-
-  next();
 });
 
 export default router;

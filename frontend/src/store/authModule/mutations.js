@@ -1,11 +1,10 @@
 export default {
   setUser(state, payload) {
     state.user = payload.user;
+    state.isLoggedIn = true;
   },
-  // setToken(state, payload) {
-  //   state.authToken = payload.token;
-  // },
   removeUser(state) {
     state.user = null;
+    state.isLoggedIn = false;
   },
 };

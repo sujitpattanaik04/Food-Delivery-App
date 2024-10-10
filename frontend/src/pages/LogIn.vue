@@ -52,14 +52,17 @@
         </div>
 
         <div class="pass">
-          <router-link to="/forgot-password">Forgot password?</router-link>
+          <router-link to="/forgot-password" replace
+            >Forgot password?</router-link
+          >
         </div>
 
         <div class="row button">
           <input type="submit" value="Login" />
         </div>
         <div class="signup-link">
-          Not a member? <router-link to="/signup">Signup now</router-link>
+          Not a member?
+          <router-link to="/signup" replace>Signup now</router-link>
         </div>
       </form>
     </div>
@@ -116,7 +119,7 @@ export default {
 
         await this.$store.dispatch("login", payload);
 
-        this.$router.replace("/dashboard");
+        this.$router.push("/dashboard");
       }
     },
   },

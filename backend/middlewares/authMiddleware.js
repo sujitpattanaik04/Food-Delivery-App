@@ -14,7 +14,7 @@ const protect = async (req, res, next) => {
     const token = req.cookies.authToken;
 
     if (!token) {
-      throw new Error("You are not logged in!");
+      throw new Error("You are not logged in !!");
     }
 
     // 2. Validate the token
@@ -23,7 +23,7 @@ const protect = async (req, res, next) => {
     const user = await User.findByPk(decodedToken.id);
 
     if (!user) {
-      throw new Error("User with the given credential does not exist!");
+      throw new Error("User with the given credential does not exist !!");
     }
 
     // 4.Check if the vendor changed the password after the token was issued

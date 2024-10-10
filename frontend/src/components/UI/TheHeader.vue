@@ -7,7 +7,6 @@
         <li class="center">
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
-        <span>{{ user?.username }}</span>
         <li class="center">
           <router-link to="/change-password">Change Password</router-link>
         </li>
@@ -18,11 +17,10 @@
 
       <div class="nav-links" v-else>
         <li class="center">
-          <router-link to="/login">Login</router-link>
+          <router-link to="/login" replace>Login</router-link>
         </li>
-        <span>{{ user?.username }}</span>
         <li class="center">
-          <router-link to="/signup">Signup</router-link>
+          <router-link to="/signup" replace>Signup</router-link>
         </li>
       </div>
     </div>
@@ -42,9 +40,8 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch("logout");
-      setTimeout(() => {
-        this.$router.replace("/login");
-      }, 2500);
+
+      this.$router.replace("/login");
     },
   },
 };

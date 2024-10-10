@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const express = require("express");
+const forge = require("node-forge");
+const fs = require("fs");
 
 const app = express();
 
@@ -51,6 +53,23 @@ app.use(
     },
   })
 );
+
+const generateKeys = () => {
+  const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(2048);
+
+  // Export the keys to PEM format
+  const publicKeyPem = forge.pki.publicKeyToPem(publicKey);
+  const privateKeyPem = forge.pki.privateKeyToPem(privateKey);
+
+  // Storing the keys
+  fs.writeFileSync("public_key.pem", publicKeyPem, "utf8");
+  fs.writeFileSync("private_key.pem", privateKeyPem, "utf8");
+};
+
+// Check if the keys already exist
+if (!fs.existsSync("public_key.pem") || !fs.existsSync("private_key.pem")) {
+  generateKeys(); // Generate keys if they don't exist
+}
 
 app.use((req, res, next) => {
   req.requestedAt = new Date().toLocaleString();

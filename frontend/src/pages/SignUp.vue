@@ -88,7 +88,8 @@
           <input type="submit" value="Signup" />
         </div>
         <div class="signup-link">
-          Already a member? <router-link to="/login">Login now</router-link>
+          Already a member?
+          <router-link to="/login" replace>Login now</router-link>
         </div>
       </form>
     </div>
@@ -126,13 +127,17 @@ export default {
   },
   methods: {
     getUsernameError() {
+      const usernamePattern = /^[a-zA-Z]+$/;
       this.usernameError =
-        this.username && this.username.length < 3
+        (this.username && this.username.length < 3
           ? "Username must be at least 3 characters."
-          : "";
+          : "") ||
+        (this.username && !usernamePattern.test(this.username)
+          ? "Username must contain characters only."
+          : "");
     },
     getEmailError() {
-      const emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+.[a-z]{2,}$/;
+      const emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
       this.emailError =
         this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
@@ -175,9 +180,11 @@ export default {
           role: this.role,
         };
 
-        await this.$store.dispatch("signup", payload);
+        const res = await this.$store.dispatch("signup", payload);
 
-        this.$router.replace("/dashboard");
+        if (res.data.status === "success") {
+          this.$router.replace("/dashboard");
+        }
       }
     },
   },

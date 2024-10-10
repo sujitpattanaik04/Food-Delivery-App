@@ -45,7 +45,7 @@ export default {
         const payload = {
           email: this.email,
         };
-        this.$store.dispatch("forgotPassword", payload);
+        await this.$store.dispatch("forgotPassword", payload);
       }
     },
   },

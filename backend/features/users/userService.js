@@ -9,13 +9,31 @@ const {
 const CustomError = require("../../utils/customError.js");
 const validatePassword = require("../../utils/passwordValidator.js");
 const signToken = require("../../utils/signToken.js");
+const forge = require("node-forge");
+// const fs = require("fs");
+
+// Load keys from files
+// const publicKeyPem = fs.readFileSync("../../public_key.pem", "utf8");
+// const privateKeyPem = fs.readFileSync("../../private_key.pem", "utf8");
 
 const registerUserService = async (userData) => {
   //GETTING ROLE FROM REQ BODY
-  let { email, phone, role } = userData;
+  let { email, phone, password, role } = userData;
 
   //DELETING ROLE FROM NEW USER DATA BECAUSE WE NEED NOT TO ADD IT IN OUR USER TABLE
   delete userData.role;
+
+  // Decrypting Password Here
+  // Decode base64 to binary
+  const encryptedBytes = forge.util.decode64(password);
+
+  // console.log("K", publicKeyPem);
+  // console.log("K", privateKeyPem);
+
+  // Decrypt the data using private key
+  const privateKey = forge.pki
+    .privateKeyFromPem(process.env.PRIVATE_KEY_PEM);
+  userData.password = privateKey.decrypt(encryptedBytes, "RSA-OAEP");
 
   //FINDING EXISTING ROLE FROM ROLE TABLE
   role = await fetchRole(role);

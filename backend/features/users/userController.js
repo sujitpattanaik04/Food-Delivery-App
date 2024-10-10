@@ -27,14 +27,23 @@ const registerUser = asyncErrorHandler(async (req, res) => {
   });
 });
 
+const getUserDetails = asyncErrorHandler(async (req, res) => {
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    user: req.user,
+  });
+});
+
 const deleteUser = asyncErrorHandler(async (req, res) => {
   const { userId } = req.params;
   const user = await deleteUserService(userId);
 
   res.status(200).json({
     status: "success",
-    data: user,
+    requestedAt: req.requestedAt,
+    user,
   });
 });
 
-module.exports = { registerUser, deleteUser };
+module.exports = { registerUser, deleteUser, getUserDetails };

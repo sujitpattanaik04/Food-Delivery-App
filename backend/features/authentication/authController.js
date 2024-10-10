@@ -57,7 +57,6 @@ const changePassword = asyncErrorHandler(async (req, res) => {
 });
 
 const logoutUser = asyncErrorHandler(async (req, res) => {
-  console.log(req.cookies.authToken);
   res.clearCookie("authToken");
   res.status(200).json({
     status: "success",

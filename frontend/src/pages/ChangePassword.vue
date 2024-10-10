@@ -147,11 +147,9 @@ export default {
 
         const res = await this.$store.dispatch("changePassword", payload);
 
-        setTimeout(() => {
-          if (res?.status === "success") {
-            this.$router.replace("/dashboard");
-          }
-        }, 2500);
+        if (res?.status === "success") {
+          this.$router.replace("/dashboard");
+        }
       }
     },
   },
