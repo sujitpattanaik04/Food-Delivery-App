@@ -45,7 +45,7 @@ const forgotPasswordService = async (req) => {
 
   await user.save();
 
-  const resetUrl = `http://192.1.200.113:8080/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
 
   const html = `<pre>Hello ${user.email},\n      We have received a password reset request. Please use given link to reset your password. Which is valid only for 10 minutes. <a href=${resetUrl}>Password Reset Link</a> </pre>  `;
 

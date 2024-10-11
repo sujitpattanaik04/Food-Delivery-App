@@ -24,7 +24,7 @@ RQIDAQAB
       console.log(payload.password);
 
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/users/signup",
+        "http://localhost:3000/api/v1/users/signup",
         payload,
         {
           withCredentials: true,
@@ -47,7 +47,7 @@ RQIDAQAB
   async login(context, payload) {
     try {
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/auth/login",
+        "http://localhost:3000/api/v1/auth/login",
         payload,
         {
           withCredentials: true,
@@ -70,7 +70,7 @@ RQIDAQAB
   async getUserDetails(context) {
     try {
       const res = await axios.get(
-        "http://192.1.200.113:3000/api/v1/users/get-user",
+        "http://localhost:3000/api/v1/users/get-user",
         {
           withCredentials: true,
         }
@@ -92,7 +92,7 @@ RQIDAQAB
         throw new Error("New Password and Confirm Password must be same !!");
 
       const res = await axios.post(
-        `http://192.1.200.113:3000/api/v1/auth/change-password`,
+        `http://localhost:3000/api/v1/auth/change-password`,
         payload,
         {
           withCredentials: true,
@@ -113,7 +113,7 @@ RQIDAQAB
   async forgotPassword(_, payload) {
     try {
       const res = await axios.post(
-        "http://192.1.200.113:3000/api/v1/auth/forgot-password",
+        "http://localhost:3000/api/v1/auth/forgot-password",
         payload.email,
         {
           withCredentials: true,
@@ -135,7 +135,7 @@ RQIDAQAB
   async resetPassword(context, payload) {
     try {
       const res = await axios.post(
-        `http://192.1.200.113:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
+        `http://localhost:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
         payload
       );
 
@@ -153,12 +153,9 @@ RQIDAQAB
 
   async logout(context) {
     try {
-      const res = await axios.get(
-        "http://192.1.200.113:3000/api/v1/auth/logout",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get("http://localhost:3000/api/v1/auth/logout", {
+        withCredentials: true,
+      });
 
       setTimeout(() => {
         successToast(res);

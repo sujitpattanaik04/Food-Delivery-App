@@ -10,11 +10,10 @@ const CustomError = require("../../utils/customError.js");
 const validatePassword = require("../../utils/passwordValidator.js");
 const signToken = require("../../utils/signToken.js");
 const forge = require("node-forge");
-// const fs = require("fs");
+const fs = require("fs");
 
 // Load keys from files
-// const publicKeyPem = fs.readFileSync("../../public_key.pem", "utf8");
-// const privateKeyPem = fs.readFileSync("../../private_key.pem", "utf8");
+// const privateKeyPem = fs.readFileSync("../backend/private_key.pem", "utf8");
 
 const registerUserService = async (userData) => {
   //GETTING ROLE FROM REQ BODY
@@ -27,7 +26,7 @@ const registerUserService = async (userData) => {
   const encryptedBytes = forge.util.decode64(password);
 
   // Decrypt the data using private key
-  const privateKey = forge.pki.privateKeyFromPem(process.env.PRIVATE_KEY_PEM);
+  const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
 
   userData.password = privateKey.decrypt(encryptedBytes, "RSA-OAEP");
 

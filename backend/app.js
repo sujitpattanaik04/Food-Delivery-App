@@ -1,8 +1,8 @@
 const { logger, customFormat } = require("./customLogger.js");
 const CustomError = require("./utils/customError.js");
 const GlobalErrorHandler = require("./utils/globalErrorHandler.js");
-const userRoute = require("./features/users/userApi.js");
 const authRoute = require("./features/authentication/authApi.js");
+const userRoute = require("./features/users/userApi.js");
 
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
@@ -15,8 +15,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://192.1.200.113:8080",
-    // origin: "http://192.1.200.113:8080",
+    origin: "http://localhost:8080",
+    // origin: "http://localhost:8080",
     credentials: true,
   })
 );
