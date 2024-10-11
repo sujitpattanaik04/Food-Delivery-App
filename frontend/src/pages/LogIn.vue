@@ -299,8 +299,8 @@ form .signup-link a:hover {
   text-decoration: underline;
 }
 
-.wrapper form .row .input-error input,
-.wrapper form .row .input-error select {
+.wrapper form .input-error input,
+.wrapper form .input-error select {
   border: 1.5px solid red;
 }
 

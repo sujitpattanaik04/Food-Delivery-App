@@ -109,8 +109,7 @@ export default {
   position: relative;
 }
 
-.wrapper form .row input,
-.wrapper form .row select {
+.wrapper form .row input {
   height: 100%;
   width: 100%;
   outline: none;
@@ -119,35 +118,15 @@ export default {
   border: 1px solid lightgrey;
   font-size: 18px;
   transition: all 0.3s ease;
-  color: #333; /* Set text color to black when typing */
+  color: #333;
 }
 
-.wrapper form .row select {
-  padding-right: 30px; /* Space for the arrow */
-  appearance: none; /* Remove default dropdown icon */
-  color: #666; /* Set text color of the select field to a faded color */
-}
-
-.wrapper form .row select option {
-  color: #333; /* Set dropdown options color to black */
-}
-
-.wrapper form .row select option[value=""] {
-  color: rgba(
-    51,
-    51,
-    51,
-    0.7
-  ); /* Placeholder color to match input placeholder */
-}
-
-form .row input:focus,
-form .row select:focus {
+form .row input:focus {
   border-color: #609966;
 }
 
 form .row input::placeholder {
-  color: #999; /* Placeholder color for input fields */
+  color: #999;
 }
 
 .wrapper form .row i {
@@ -176,7 +155,7 @@ form .row input::placeholder {
 }
 
 .wrapper form .button input {
-  margin-top: 25px;
+  margin-top: 10px;
   color: #609966;
   font-size: 20px;
   font-weight: 500;
@@ -192,8 +171,7 @@ form .button input:hover {
   color: white;
 }
 
-.wrapper form .row .input-error input,
-.wrapper form .row .input-error select {
+.wrapper form .input-error input {
   border: 1.5px solid red;
 }
 
