@@ -109,16 +109,16 @@ export default {
   data() {
     return {
       username: "",
-      email: "",
-      phone: "",
-      password: "",
-      role: "",
-      isPasswordVisible: false,
-      emailError: "",
       usernameError: "",
+      email: "",
+      emailError: "",
+      phone: "",
       phoneError: "",
+      password: "",
       passwordError: "",
+      role: "",
       roleError: "",
+      isPasswordVisible: false,
       downArrow: true,
     };
   },

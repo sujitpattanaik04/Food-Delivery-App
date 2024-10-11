@@ -2,22 +2,8 @@
   <section>
     <the-header></the-header>
     <div class="wrapper">
-      <div class="title"><span>Signup Form</span></div>
+      <div class="title"><span>Login Form</span></div>
       <form @submit.prevent="handleSubmit">
-        <div class="row" :class="{ 'input-error': usernameError }">
-          <i class="bx bx-user"></i>
-          <input
-            type="text"
-            placeholder="Username"
-            v-model.trim="username"
-            required
-            @blur="getUsernameError"
-          />
-          <span v-if="usernameError" class="error-message">{{
-            usernameError
-          }}</span>
-        </div>
-
         <div class="row" :class="{ 'input-error': emailError }">
           <i class="bx bx-envelope"></i>
           <input
@@ -28,18 +14,6 @@
             @blur="getEmailError"
           />
           <span v-if="emailError" class="error-message">{{ emailError }}</span>
-        </div>
-
-        <div class="row" :class="{ 'input-error': phoneError }">
-          <i class="bx bx-phone"></i>
-          <input
-            type="text"
-            placeholder="Phone"
-            v-model.trim="phone"
-            required
-            @blur="getPhoneError"
-          />
-          <span v-if="phoneError" class="error-message">{{ phoneError }}</span>
         </div>
 
         <div class="row" :class="{ 'input-error': passwordError }">
@@ -87,12 +61,18 @@
           <span v-if="roleError" class="error-message">{{ roleError }}</span>
         </div>
 
-        <div class="row button">
-          <input type="submit" value="Signup" />
+        <div class="pass">
+          <router-link to="/forgot-password" replace
+            >Forgot password?</router-link
+          >
         </div>
-        <div class="login-link">
-          Already a member?
-          <router-link to="/login" replace>Login now</router-link>
+
+        <div class="row button">
+          <input type="submit" value="Login" />
+        </div>
+        <div class="signup-link">
+          Not a member?
+          <router-link to="/signup" replace>Signup Here</router-link>
         </div>
       </form>
     </div>
@@ -108,43 +88,22 @@ export default {
   },
   data() {
     return {
-      username: "",
       email: "",
-      phone: "",
       password: "",
       role: "",
       isPasswordVisible: false,
       emailError: "",
-      usernameError: "",
-      phoneError: "",
       passwordError: "",
       roleError: "",
-      downArrow: true,
+      downArrow: false,
     };
   },
   methods: {
-    getUsernameError() {
-      const usernamePattern = /^[A-Za-z\s]+$/;
-      this.usernameError =
-        (this.username && this.username.length < 3
-          ? "Username must be at least 3 characters."
-          : "") ||
-        (this.username && !usernamePattern.test(this.username)
-          ? "Username must contain characters only."
-          : "");
-    },
     getEmailError() {
       const emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
       this.emailError =
         this.email && !emailPattern.test(this.email)
           ? "Please enter a valid email."
-          : "";
-    },
-    getPhoneError() {
-      const phonePattern = /^\d{10}$/;
-      this.phoneError =
-        this.phone && !phonePattern.test(this.phone)
-          ? "Phone number must be 10 digits."
           : "";
     },
     getPasswordError() {
@@ -162,22 +121,14 @@ export default {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
     async handleSubmit() {
-      if (
-        !this.usernameError &&
-        !this.emailError &&
-        !this.phoneError &&
-        !this.passwordError &&
-        !this.roleError
-      ) {
+      if (!this.emailError && !this.passwordError && !this.roleError) {
         const payload = {
-          username: this.username,
           email: this.email,
-          phone: this.phone,
           password: this.password,
           role: this.role,
         };
 
-        const res = await this.$store.dispatch("signup", payload);
+        const res = await this.$store.dispatch("login", payload);
 
         if (res?.data?.status === "success") this.$router.replace("/dashboard");
       }
@@ -302,6 +253,20 @@ form .row input::placeholder {
   cursor: pointer;
 }
 
+.wrapper form .pass {
+  margin-top: 5px;
+}
+
+.wrapper form .pass a {
+  margin-left: -280px;
+  color: #609966;
+  font-size: 17px;
+  text-decoration: none;
+}
+.wrapper form .pass a:hover {
+  text-decoration: underline;
+}
+
 .wrapper form .button input {
   margin-top: 25px;
   color: #609966;
@@ -319,18 +284,18 @@ form .button input:hover {
   color: white;
 }
 
-.wrapper form .login-link {
+.wrapper form .signup-link {
   text-align: center;
   margin-top: 45px;
   font-size: 17px;
 }
 
-.wrapper form .login-link a {
+.wrapper form .signup-link a {
   color: #609966;
   text-decoration: none;
 }
 
-form .login-link a:hover {
+form .signup-link a:hover {
   text-decoration: underline;
 }
 

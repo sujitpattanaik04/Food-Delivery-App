@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store/index.js";
 
-import SignUp from "../pages/SignUp.vue";
-import LogIn from "../pages/LogIn.vue";
-import DashBoard from "../pages/DashBoard.vue";
-import ForgotPassword from "../pages/ForgotPassword.vue";
-import ResetPassword from "../pages/ResetPassword.vue";
-import ChangePassword from "../pages/ChangePassword.vue";
-import PageNotFound from "../pages/PageNotFound.vue";
+import SignUp from "../views/SignUp.vue";
+import LogIn from "../views/LogIn.vue";
+import DashBoard from "../views/DashBoard.vue";
+import ForgotPassword from "../views/ForgotPassword.vue";
+import ResetPassword from "../views/ResetPassword.vue";
+import ChangePassword from "../views/ChangePassword.vue";
+import PageNotFound from "../views/PageNotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(),
