@@ -1,7 +1,16 @@
 <template>
   <v-toolbar>
     <v-toolbar-title class="nav-title">FooDelivery</v-toolbar-title>
-    <div class="nav-links">
+    <div class="nav-links" v-if="user">
+      <router-link to="/dashboard" class="center" replace
+        >Dashboard</router-link
+      >
+      <router-link to="/change-password" class="center" replace
+        >Change Password</router-link
+      >
+      <a @click="logout">Logout</a>
+    </div>
+    <div class="nav-links" v-else>
       <router-link to="/login" class="center" replace>Login</router-link>
       <router-link to="/signup" class="center" replace>Signup</router-link>
     </div>
@@ -11,6 +20,26 @@
     </v-btn>
   </v-toolbar>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+  created() {
+    this.user = this.$store.getters.getUser;
+  },
+  methods: {
+    async logout() {
+      const res = await this.$store.dispatch("logout");
+
+      if (res?.data?.status === "success") this.$router.replace("/login");
+    },
+  },
+};
+</script>
 
 <style scoped>
 .nav-title {
@@ -30,6 +59,7 @@
 }
 
 .nav-links a:hover {
+  cursor: pointer;
   color: #609966;
 }
 

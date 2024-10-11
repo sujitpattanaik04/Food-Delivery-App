@@ -13,7 +13,7 @@ const forge = require("node-forge");
 const fs = require("fs");
 
 // Load keys from files
-// const privateKeyPem = fs.readFileSync("../backend/private_key.pem", "utf8");
+const privateKeyPem = fs.readFileSync("../backend/private_key.pem", "utf8");
 
 const registerUserService = async (userData) => {
   //GETTING ROLE FROM REQ BODY

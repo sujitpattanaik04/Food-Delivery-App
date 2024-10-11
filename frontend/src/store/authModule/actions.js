@@ -6,13 +6,13 @@ export default {
   async signup(context, payload) {
     try {
       const publicKeyPem = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7W4y0BrsyqgFdWEbxbpO
-mwC1W7Su9Pykhj/Pmvfs67AHOwQPUgCsWrs0nyDR9FDABrpmxwrSMnHfwjXq4dck
-n5omB2merBxYpDC7W5rlaoTdkSNGLFTQ58ayjZLNNTqZwZk9nNuFEs3i88SkEqjn
-jZWFKeQI9R37RGlmH2VG2QWotEiGraVwe+vBJeM56JUz7hmI4kO8r5zIGTAc673E
-xSPwMiv2wTeXHQUWq0XVcB+QMynZyfVNYvrO+OpnWpJERGY/l9hlqZL8s8NKYFcD
-8WFZJc2+HSiek/BXI6fM679dxGm/ieCnDYfLGPpqphgHURxvt6dYwCRIWQtK+smK
-RQIDAQAB
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsb1EMG1ehpIlRt3WgFvm
+NWZa98OtoFSeUyHgSeMxH3BBB5+cXWRowRtVm7sXnPgHqRAE6kJqNSVQvMAVIF63
+EHbcO30T17RogIPpGhEaBspX9ijFy3wXyT/9GEkpHC4rQZNZYhHEnjm4kxqoptKp
+uB8HUvhroAGRdCnRM6VJ4qivLdhhKd5Om1aKLM3Pex313zCBm9TQJC0Qpnrs7KBB
+sSxMcJk/FEPSrCqh5Vxt/+tXm8ZgSrSkBzFoZz4S6kSNCwCiGenxTnpNrZpOV4z3
+3u7s+Bv8hgVKVOMasLXt/lQ6fqjfxGxTshzmELpcWx4/Iey+bgERHUyhgLleZ8Xe
+xwIDAQAB
 -----END PUBLIC KEY-----`;
       // Convert the PEM to a forge public key
       const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);

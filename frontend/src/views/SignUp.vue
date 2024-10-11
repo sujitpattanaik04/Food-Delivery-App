@@ -15,11 +15,13 @@
               "
               >Signup Form</v-card-title
             >
-            <v-form>
+            <v-form ref="form" class="px-10 gap-2">
               <v-text-field
                 v-model="username"
                 :rules="usernameRules"
                 label="Username*"
+                variant="outlined"
+                class="mb-2"
                 required
               ></v-text-field>
 
@@ -27,6 +29,8 @@
                 v-model="email"
                 :rules="emailRules"
                 label="Email*"
+                variant="outlined"
+                class="mb-2"
                 required
               ></v-text-field>
 
@@ -35,6 +39,8 @@
                 :counter="10"
                 :rules="phoneRules"
                 label="Phone*"
+                variant="outlined"
+                class="mb-2"
                 required
               ></v-text-field>
 
@@ -43,6 +49,8 @@
                 :rules="passwordRules"
                 :type="showPassword ? 'text' : 'password'"
                 label="Password*"
+                variant="outlined"
+                class="mb-2"
                 required
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
@@ -53,6 +61,8 @@
                 :items="roles"
                 :rules="[(v) => !!v || 'Select Role is a required field']"
                 label="Select Role*"
+                variant="outlined"
+                class="mb-2"
                 required
               ></v-select>
 
@@ -60,10 +70,11 @@
                 v-model="checkbox"
                 label="Remember Me"
                 required
+                class="mt-n6"
               ></v-checkbox>
 
               <div class="d-flex justify-center">
-                <v-btn class="custom-btn b-6" width="400" @click="handleSubmit"
+                <v-btn class="custom-btn b-6" width="350" @click="handleSubmit"
                   >Submit</v-btn
                 >
               </div>
@@ -132,17 +143,23 @@ export default {
 
   methods: {
     async handleSubmit() {
-      const payload = {
-        username: this.username,
-        email: this.email,
-        phone: this.phone,
-        password: this.password,
-        role: this.role,
-      };
+      console.log(this.$refs.form);
 
-      const res = await this.$store.dispatch("signup", payload);
+      if (this.$refs.form.validate()) {
+        const payload = {
+          username: this.username,
+          email: this.email,
+          phone: this.phone,
+          password: this.password,
+          role: this.role,
+        };
 
-      if (res?.data?.status === "success") this.$router.replace("/dashboard");
+        const res = await this.$store.dispatch("signup", payload);
+
+        if (res?.data?.status === "success") this.$router.replace("/dashboard");
+      } else {
+        alert("Form is invalid, please correct the errors.");
+      }
     },
     // reset() {
     //   this.$refs.form.reset();

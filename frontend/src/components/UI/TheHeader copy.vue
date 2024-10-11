@@ -16,7 +16,7 @@
       </div>
 
       <div class="nav-links" v-else>
-        <li class="center">
+        <li class="center"> 
           <router-link to="/login" replace>Login</router-link>
         </li>
         <li class="center">
