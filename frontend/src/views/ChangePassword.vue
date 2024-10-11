@@ -199,8 +199,7 @@ export default {
   position: relative;
 }
 
-.wrapper form .row input,
-.wrapper form .row select {
+.wrapper form .row input {
   height: 100%;
   width: 100%;
   outline: none;
@@ -209,35 +208,15 @@ export default {
   border: 1px solid lightgrey;
   font-size: 18px;
   transition: all 0.3s ease;
-  color: #333; /* Set text color to black when typing */
+  color: #333;
 }
 
-.wrapper form .row select {
-  padding-right: 30px; /* Space for the arrow */
-  appearance: none; /* Remove default dropdown icon */
-  color: #666; /* Set text color of the select field to a faded color */
-}
-
-.wrapper form .row select option {
-  color: #333; /* Set dropdown options color to black */
-}
-
-.wrapper form .row select option[value=""] {
-  color: rgba(
-    51,
-    51,
-    51,
-    0.7
-  ); /* Placeholder color to match input placeholder */
-}
-
-form .row input:focus,
-form .row select:focus {
+form .row input:focus {
   border-color: #609966;
 }
 
 form .row input::placeholder {
-  color: #999; /* Placeholder color for input fields */
+  color: #999;
 }
 
 .wrapper form .row i {
@@ -265,66 +244,24 @@ form .row input::placeholder {
   font-size: 28px;
 }
 
-.wrapper form .row .arrow {
-  position: absolute;
-  right: 34px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #609966;
-  font-size: 18px;
-}
-
-.wrapper form .row .arrow:hover {
-  cursor: pointer;
-}
-
-.wrapper form .pass {
-  margin-top: 12px;
-}
-
-.wrapper form .pass a {
-  margin-left: -275px;
-  color: #609966;
-  font-size: 17px;
-  text-decoration: none;
-}
-
-.wrapper form .pass a:hover {
-  text-decoration: underline;
-}
-
 .wrapper form .button input {
   margin-top: 10px;
-  color: #fff;
+  color: #609966;
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #609966;
-  border: 1px solid #609966;
+  border: none;
   cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 form .button input:hover {
   background: #609966;
+  color: white;
 }
 
-.wrapper form .signup-link {
-  text-align: center;
-  margin-top: 45px;
-  font-size: 17px;
-}
-
-.wrapper form .signup-link a {
-  color: #609966;
-  text-decoration: none;
-}
-
-form .signup-link a:hover {
-  text-decoration: underline;
-}
-
-.wrapper form .row .input-error input,
-.wrapper form .row .input-error select {
+.wrapper form .input-error input {
   border: 1.5px solid red;
 }
 

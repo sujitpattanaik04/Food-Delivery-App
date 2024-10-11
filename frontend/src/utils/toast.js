@@ -4,7 +4,7 @@ import "vue3-toastify/dist/index.css";
 // Success toast function
 const successToast = (res) => {
   toast.success(res.data?.message, {
-    autoClose: 1000,
+    autoClose: 1500,
     closeOnClick: false,
     pauseOnHover: true,
     position: "top-center",
@@ -18,7 +18,7 @@ const errorToast = (error) => {
   toast.error(
     error?.response?.data?.message || error.message || "An error occurred",
     {
-      autoClose: 1000,
+      autoClose: 1500,
       closeOnClick: false,
       pauseOnHover: true,
       position: "top-center",
@@ -26,7 +26,4 @@ const errorToast = (error) => {
     }
   );
 };
-export default {
-  successToast,
-  errorToast,
-};
+export { successToast, errorToast };

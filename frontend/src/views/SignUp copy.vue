@@ -109,16 +109,16 @@ export default {
   data() {
     return {
       username: "",
-      email: "",
-      phone: "",
-      password: "",
-      role: "",
-      isPasswordVisible: false,
-      emailError: "",
       usernameError: "",
+      email: "",
+      emailError: "",
+      phone: "",
       phoneError: "",
+      password: "",
       passwordError: "",
+      role: "",
       roleError: "",
+      isPasswordVisible: false,
       downArrow: true,
     };
   },
@@ -302,10 +302,6 @@ form .row input::placeholder {
   cursor: pointer;
 }
 
-.wrapper form .pass a:hover {
-  text-decoration: underline;
-}
-
 .wrapper form .button input {
   margin-top: 25px;
   color: #609966;
@@ -348,10 +344,5 @@ form .login-link a:hover {
   font-size: 15px;
   position: absolute;
   width: 450px;
-}
-
-img {
-  width: 100%;
-  height: auto;
 }
 </style>

@@ -72,7 +72,7 @@
         </div>
         <div class="signup-link">
           Not a member?
-          <router-link to="/signup" replace>Signup now</router-link>
+          <router-link to="/signup" replace>Signup Here</router-link>
         </div>
       </form>
     </div>
@@ -299,8 +299,8 @@ form .signup-link a:hover {
   text-decoration: underline;
 }
 
-.wrapper form .row .input-error input,
-.wrapper form .row .input-error select {
+.wrapper form .input-error input,
+.wrapper form .input-error select {
   border: 1.5px solid red;
 }
 

@@ -23,16 +23,12 @@ const registerUserService = async (userData) => {
   //DELETING ROLE FROM NEW USER DATA BECAUSE WE NEED NOT TO ADD IT IN OUR USER TABLE
   delete userData.role;
 
-  // Decrypting Password Here
   // Decode base64 to binary
   const encryptedBytes = forge.util.decode64(password);
 
-  // console.log("K", publicKeyPem);
-  // console.log("K", privateKeyPem);
-
   // Decrypt the data using private key
-  const privateKey = forge.pki
-    .privateKeyFromPem(process.env.PRIVATE_KEY_PEM);
+  const privateKey = forge.pki.privateKeyFromPem(process.env.PRIVATE_KEY_PEM);
+
   userData.password = privateKey.decrypt(encryptedBytes, "RSA-OAEP");
 
   //FINDING EXISTING ROLE FROM ROLE TABLE
