@@ -7,13 +7,20 @@ const store = createStore({
     //   request: requestModule,
   },
   state() {
-    return {};
+    return {
+      darkTheme: true,
+    };
   },
-  //   getters: {
-  //     getUserId(state) {
-  //       return state.userId;
-  //     },
-  //   },
+  getters: {
+    isDark(state) {
+      return state.darkTheme;
+    },
+  },
+  mutations: {
+    toggleTheme(state) {
+      state.darkTheme = !state.darkTheme;
+    },
+  },
 });
 
 export default store;

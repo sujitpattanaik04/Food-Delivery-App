@@ -1,184 +1,93 @@
 <template>
-  <div class="wrapper">
-    <div class="title"><span>Reset Password</span></div>
-    <form @submit.prevent="handleSubmit">
-      <div class="row" :class="{ 'input-error': passwordError }">
-        <i class="bx bx-lock"></i>
-        <input
-          :type="isPasswordVisible ? 'text' : 'password'"
-          placeholder="New Password"
-          v-model.trim="newPassword"
-          required
-          @blur="getPasswordError"
-        />
-        <i
-          class="toggle-password"
-          @click="togglePasswordVisibility"
-          :class="{
-            'bx bx-hide': isPasswordVisible === true,
-            'bx bx-show': isPasswordVisible === false,
-          }"
-        ></i>
-        <span v-if="passwordError" class="error-message">{{
-          passwordError
-        }}</span>
-      </div>
+  <v-main>
+    <the-header></the-header>
+    <v-container fluid class="mt-5">
+      <v-row justify="center">
+        <v-col cols="12" sm="8" md="6" lg="4">
+          <v-card class="custom-card text-center">
+            <v-card-title
+              style="
+                color: #609966;
+                margin: 10px 0 10px 0;
+                font-weight: 700;
+                font-size: x-large;
+                letter-spacing: 1.5px;
+              "
+              >Reset Password Form</v-card-title
+            >
+            <v-form v-model="isFormValid" class="px-10">
+              <!-- <v-text-field
+                v-model="phone"
+                :counter="10"
+                :rules="phoneRules"
+                label="Phone*"
+                variant="outlined"
+                class="mb-2"
+                color="#609966"
+                required
+                @input="filterPhoneNumber"
+              ></v-text-field> -->
 
-      <div class="row button">
-        <input type="submit" value="Reset Password" />
-      </div>
-    </form>
-  </div>
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                :type="showPassword ? 'text' : 'password'"
+                label="Enter New Password*"
+                variant="outlined"
+                class="mb-2"
+                color="#609966"
+                required
+                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                @click:append-inner="showPassword = !showPassword"
+              ></v-text-field>
+
+              <div class="d-flex justify-center">
+                <v-btn
+                  class="custom-btn mb-5"
+                  width="250"
+                  @click="handleSubmit"
+                  :disabled="!isFormValid"
+                  >Reset Password</v-btn
+                >
+              </div>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      newPassword: "",
-      isPasswordVisible: false,
-      passwordError: "",
+      password: null,
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) =>
+          (v &&
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+              v
+            )) ||
+          "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase",
+      ],
+      showPassword: false,
+      isFormValid: false,
     };
   },
   methods: {
-    getPasswordError() {
-      const passwordPattern =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-      this.passwordError =
-        !passwordPattern.test(this.newPassword) && this.newPassword
-          ? "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase"
-          : "";
-    },
-    togglePasswordVisibility() {
-      this.isPasswordVisible = !this.isPasswordVisible;
-    },
     async handleSubmit() {
-      if (!this.passwordError) {
-        const payload = {
-          newPassword: this.newPassword,
-        };
+      const payload = {
+        newPassword: this.password,
+      };
 
-        const res = await this.$store.dispatch("resetPassword", payload);
+      const res = await this.$store.dispatch("resetPassword", payload);
 
-        if (res.data.status === "success") this.$router.replace("/login");
-      }
+      if (res?.data?.status === "success") this.$router.replace("/login");
     },
   },
 };
 </script>
 
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-.wrapper {
-  max-width: 500px;
-  width: 100%;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  margin-left: 34vw;
-}
-
-.wrapper .title {
-  height: 120px;
-  color: #609966;
-  border-radius: 5px 5px 0 0;
-  font-size: 30px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 2px solid rgba(128, 128, 128, 0.323);
-  margin-inline: 15px;
-}
-
-.wrapper form {
-  padding: 25px 35px;
-}
-
-.wrapper form .row {
-  height: 60px;
-  margin-top: 15px;
-  position: relative;
-}
-
-.wrapper form .row input {
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding-left: 70px;
-  border-radius: 5px;
-  border: 1px solid lightgrey;
-  font-size: 18px;
-  transition: all 0.3s ease;
-  color: #333;
-}
-
-form .row input:focus {
-  border-color: #609966;
-}
-
-form .row input::placeholder {
-  color: #999;
-}
-
-.wrapper form .row i {
-  position: absolute;
-  width: 55px;
-  height: 100%;
-  color: grey;
-  font-size: 22px;
-  border: 0.5px solid rgba(128, 128, 128, 0.337);
-  border-radius: 5px 0 0 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wrapper form .row .toggle-password {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: grey;
-  background: transparent;
-  border: none;
-  font-size: 28px;
-}
-
-.wrapper form .button input {
-  margin-top: 10px;
-  color: #609966;
-  font-size: 20px;
-  font-weight: 500;
-  padding-left: 0px;
-  border: none;
-  cursor: pointer;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-form .button input:hover {
-  background: #609966;
-  color: white;
-}
-
-.wrapper form .input-error input {
-  border: 1.5px solid red;
-}
-
-.error-message {
-  color: red;
-  font-size: 15px;
-  position: absolute;
-  width: 450px;
-}
-</style>
+<style scoped></style>

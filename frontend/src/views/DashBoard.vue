@@ -1,15 +1,12 @@
 <template>
-  <the-header></the-header>
-  <h1>Hello {{ username }}! How's it going?</h1>
+  <v-main>
+    <the-header></the-header>
+    <h2>Hello {{ fullname }}! How's it going?</h2>
+  </v-main>
 </template>
 
 <script>
-import TheHeader from "../components/UI/TheHeader.vue";
-
 export default {
-  components: {
-    TheHeader,
-  },
   data() {
     return {
       username: "",
@@ -18,14 +15,14 @@ export default {
   created() {
     const user = this.$store.getters.getUser;
     if (!user) this.$router.replace("/signup");
-    this.username = user ? user.username : "";
+    this.fullname = user ? user.fullname : "";
   },
 };
 </script>
 
 <style scoped>
-h1 {
+h2 {
   position: absolute;
-  margin-top: 50px;
+  margin: -55px 0 0 10px;
 }
 </style>

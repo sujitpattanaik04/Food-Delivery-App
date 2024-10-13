@@ -22,12 +22,12 @@ const loginUserService = async (userData) => {
   const isPasswordValid = await user.comparePassword(password, user.password);
 
   if (!isPasswordValid)
-    throw new CustomError("You have entered wrong password !!", 400);
+    throw new CustomError("You have entered wrong password !!", 401);
 
   const userRole = await fetchUserRole(user, role);
 
   if (!userRole)
-    throw new CustomError("You have entered incorrect role !!", 400);
+    throw new CustomError("You have entered incorrect role !!", 401);
 
   const token = signToken(user.uuid);
 
@@ -45,7 +45,7 @@ const forgotPasswordService = async (req) => {
 
   await user.save();
 
-  const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
+  const resetUrl = `http://192.168.1.7:8080/reset-password/${resetToken}`;
 
   const html = `<pre>Hello ${user.email},\n      We have received a password reset request. Please use given link to reset your password. Which is valid only for 10 minutes. <a href=${resetUrl}>Password Reset Link</a> </pre>  `;
 
@@ -62,7 +62,7 @@ const forgotPasswordService = async (req) => {
     user.save();
 
     if (!user)
-      throw new CustomError("Something went wrong in sending mail !!", 404);
+      throw new CustomError("Something went wrong in sending mail !!", 400);
   }
 
   return;
@@ -78,13 +78,10 @@ const resetPasswordService = async (req) => {
 
   const user = await fetchUserByResetToken(token);
 
-  if (!user) throw new CustomError("Token is invalid or has expired !!", 400);
+  if (!user) throw new CustomError("Token is invalid or has expired !!", 401);
 
   user.password = newPassword;
   user.passwordResetToken = null;
-  meta: {
-    login: false;
-  }
   user.passwordResetTokenExpires = null;
   user.passwordChangedAt = Date.now();
 
@@ -103,7 +100,7 @@ const changePasswordService = async (req) => {
   );
 
   if (!isPasswordValid)
-    throw new CustomError("Please provide valid Old Password !!", 400);
+    throw new CustomError("Please provide valid Old Password !!", 401);
 
   user.password = newPassword;
   user.passwordResetToken = null;

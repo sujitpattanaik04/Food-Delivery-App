@@ -74,6 +74,16 @@
             "date": 1728672146036,
             "name": "logs\\winston-2024-10-12.log",
             "hash": "f19d8901d6dc13b6bfda14d8e5b487c2be468222bebe5f5f19a279e793bd50ba"
+        },
+        {
+            "date": 1728758309504,
+            "name": "logs\\winston-2024-10-13.log",
+            "hash": "3768888a3d7548b2426940cdf63133ac6996a804068d6a93374e8d9e6e3f8bd2"
+        },
+        {
+            "date": 1728845119378,
+            "name": "logs\\winston-2024-10-14.log",
+            "hash": "db1efef2565ace55de5b1ae109a307dac77eca1f2f5534b524cec49d089cb8f1"
         }
     ],
     "hashType": "sha256"

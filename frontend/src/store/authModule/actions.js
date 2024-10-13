@@ -14,6 +14,7 @@ sSxMcJk/FEPSrCqh5Vxt/+tXm8ZgSrSkBzFoZz4S6kSNCwCiGenxTnpNrZpOV4z3
 3u7s+Bv8hgVKVOMasLXt/lQ6fqjfxGxTshzmELpcWx4/Iey+bgERHUyhgLleZ8Xe
 xwIDAQAB
 -----END PUBLIC KEY-----`;
+
       // Convert the PEM to a forge public key
       const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
       // Encrypt the message
@@ -24,7 +25,7 @@ xwIDAQAB
       console.log(payload.password);
 
       const res = await axios.post(
-        "http://localhost:3000/api/v1/users/signup",
+        "http://192.168.1.7:3000/api/v1/users/signup",
         payload,
         {
           withCredentials: true,
@@ -47,7 +48,7 @@ xwIDAQAB
   async login(context, payload) {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/login",
+        "http://192.168.1.7:3000/api/v1/auth/login",
         payload,
         {
           withCredentials: true,
@@ -70,7 +71,7 @@ xwIDAQAB
   async getUserDetails(context) {
     try {
       const res = await axios.get(
-        "http://localhost:3000/api/v1/users/get-user",
+        "http://192.168.1.7:3000/api/v1/users/get-user",
         {
           withCredentials: true,
         }
@@ -92,7 +93,7 @@ xwIDAQAB
         throw new Error("New Password and Confirm Password must be same !!");
 
       const res = await axios.post(
-        `http://localhost:3000/api/v1/auth/change-password`,
+        `http://192.168.1.7:3000/api/v1/auth/change-password`,
         payload,
         {
           withCredentials: true,
@@ -113,7 +114,7 @@ xwIDAQAB
   async forgotPassword(_, payload) {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/forgot-password",
+        "http://192.168.1.7:3000/api/v1/auth/forgot-password",
         payload.email,
         {
           withCredentials: true,
@@ -132,10 +133,10 @@ xwIDAQAB
     }
   },
 
-  async resetPassword(context, payload) {
+  async resetPassword(_, payload) {
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
+        `http://192.168.1.7:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
         payload
       );
 
@@ -153,9 +154,12 @@ xwIDAQAB
 
   async logout(context) {
     try {
-      const res = await axios.get("http://localhost:3000/api/v1/auth/logout", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "http://192.168.1.7:3000/api/v1/auth/logout",
+        {
+          withCredentials: true,
+        }
+      );
 
       setTimeout(() => {
         successToast(res);

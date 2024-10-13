@@ -14,7 +14,7 @@ module.exports = (connectDB) => {
         primaryKey: true,
         allowNull: false,
       },
-      username: {
+      fullname: {
         type: DataTypes.STRING(100),
         allowNull: false,
         validate: {

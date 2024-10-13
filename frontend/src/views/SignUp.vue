@@ -1,9 +1,9 @@
 <template>
-  <section>
+  <v-main>
     <the-header></the-header>
     <v-container fluid class="mt-5">
       <v-row justify="center">
-        <v-col cols="4">
+        <v-col cols="12" sm="8" md="6" lg="4">
           <v-card class="custom-card text-center">
             <v-card-title
               style="
@@ -15,20 +15,12 @@
               "
               >Signup Form</v-card-title
             >
-            <v-form ref="form" class="px-10 gap-2">
+            <v-form v-model="isFormValid" class="px-10">
               <v-text-field
-                v-model="username"
-                :rules="usernameRules"
-                label="Username*"
-                variant="outlined"
-                class="mb-2"
-                required
-              ></v-text-field>
-
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="Email*"
+                v-model="fullname"
+                :rules="fullnameRules"
+                label="Full Name*"
+                color="#609966"
                 variant="outlined"
                 class="mb-2"
                 required
@@ -41,6 +33,18 @@
                 label="Phone*"
                 variant="outlined"
                 class="mb-2"
+                color="#609966"
+                required
+                @input="filterPhoneNumber"
+              ></v-text-field>
+
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="Email*"
+                variant="outlined"
+                class="mb-2"
+                color="#609966"
                 required
               ></v-text-field>
 
@@ -51,6 +55,7 @@
                 label="Password*"
                 variant="outlined"
                 class="mb-2"
+                color="#609966"
                 required
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
@@ -63,19 +68,24 @@
                 label="Select Role*"
                 variant="outlined"
                 class="mb-2"
+                color="#609966"
                 required
               ></v-select>
 
               <v-checkbox
                 v-model="checkbox"
-                label="Remember Me"
-                required
+                label="I agree to FooDelivery's Terms of Service."
                 class="mt-n6"
+                required
               ></v-checkbox>
 
               <div class="d-flex justify-center">
-                <v-btn class="custom-btn b-6" width="350" @click="handleSubmit"
-                  >Submit</v-btn
+                <v-btn
+                  class="custom-btn b-6"
+                  width="250"
+                  @click="handleSubmit"
+                  :disabled="!isFormValid"
+                  >Register</v-btn
                 >
               </div>
 
@@ -83,7 +93,7 @@
                 Already have an account?
                 <router-link
                   to="/login"
-                  class="router-link"
+                  class="custom-link"
                   style="font-weight: 500"
                   replace
                   >Login Here</router-link
@@ -94,24 +104,19 @@
         </v-col>
       </v-row>
     </v-container>
-  </section>
+  </v-main>
 </template>
 
 <script>
-import TheHeader from "../components/UI/TheHeader.vue";
-
 export default {
-  components: {
-    TheHeader,
-  },
   data: () => ({
-    username: null,
-    usernameRules: [
-      (v) => !!v || "Username is a required field",
-      (v) => (v && v.length > 3) || "Username must be more than 3 characters",
+    fullname: null,
+    fullnameRules: [
+      (v) => !!v || "Full Name is a required field",
+      (v) => (v && v.length > 3) || "Full Name must be more than 3 characters",
       (v) =>
         (v && /^[A-Za-z\s]+$/.test(v)) ||
-        "Username must contain characters only.",
+        "Full Name must contain characters only.",
     ],
     email: null,
     emailRules: [
@@ -138,60 +143,30 @@ export default {
     role: null,
     roles: ["Admin", "Customer", "Delivery Partner", "Restaurant Owner"],
     showPassword: false,
+    isFormValid: false,
     checkbox: false,
   }),
 
   methods: {
-    async handleSubmit() {
-      console.log(this.$refs.form);
-
-      if (this.$refs.form.validate()) {
-        const payload = {
-          username: this.username,
-          email: this.email,
-          phone: this.phone,
-          password: this.password,
-          role: this.role,
-        };
-
-        const res = await this.$store.dispatch("signup", payload);
-
-        if (res?.data?.status === "success") this.$router.replace("/dashboard");
-      } else {
-        alert("Form is invalid, please correct the errors.");
-      }
+    filterPhoneNumber(event) {
+      const value = event.target.value.replace(/\D/g, "");
+      this.phone = value;
     },
-    // reset() {
-    //   this.$refs.form.reset();
-    // },
-    // resetValidation() {
-    //   this.$refs.form.resetValidation();
-    // },
+    async handleSubmit() {
+      const payload = {
+        fullname: this.fullname,
+        email: this.email,
+        phone: this.phone,
+        password: this.password,
+        role: this.role,
+      };
+
+      const res = await this.$store.dispatch("signup", payload);
+
+      if (res?.data?.status === "success") this.$router.replace("/dashboard");
+    },
   },
 };
 </script>
 
-<style scoped>
-.custom-card {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.custom-btn {
-  color: #609966;
-  background-color: white;
-}
-
-.custom-btn:hover {
-  background-color: #609966;
-  color: white;
-}
-
-.router-link {
-  color: #609966;
-  text-decoration: none;
-}
-
-.router-link:hover {
-  text-decoration: underline;
-}
-</style>
+<style scoped></style>
