@@ -12,7 +12,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
 
   const options = {
     maxAge: process.env.LOGIN_EXPIRES_IN,
-    // httpOnly: true, // Prevent client-side access
+    httpOnly: true, // Prevent client-side access
     // secure: true, // Send cookie only over HTTPS
     // sameSite: "strict", // Adjust as needed for cross-site scenarios
   };

@@ -49,6 +49,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-email"
               ></v-text-field>
 
               <div class="d-flex justify-center">

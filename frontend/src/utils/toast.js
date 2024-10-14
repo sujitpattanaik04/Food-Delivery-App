@@ -9,6 +9,8 @@ const successToast = (res) => {
     pauseOnHover: true,
     position: "top-center",
     transition: "flip",
+    hideProgressBar: true,
+    theme: "colored",
   });
 };
 
@@ -23,6 +25,8 @@ const errorToast = (error) => {
       pauseOnHover: true,
       position: "top-center",
       transition: "flip",
+      hideProgressBar: true,
+      theme: "colored",
     }
   );
 };

@@ -6,7 +6,7 @@ const connectDB = new Sequelize(
   process.env.DB_USERNAME,
   process.env.DB_PASSWORD,
   {
-    host: process.env.DB_HOST || "192.168.1.7",
+    host: process.env.DB_HOST || "localhost",
     dialect: "postgres",
     port: process.env.DB_PORT || 5432,
     logging: false,
@@ -36,10 +36,10 @@ const check = async () => {
     await connectDB.authenticate();
     console.log("Connection has been established successfully.");
     await db.connectDB.sync({ force: false });
+    // await db.Role.create({ roleName: "Admin" });
     // await db.Role.create({ roleName: "Customer" });
     // await db.Role.create({ roleName: "Restaurant Owner" });
     // await db.Role.create({ roleName: "Delivery Partner" });
-    // await db.Role.create({ roleName: "Admin" });
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }

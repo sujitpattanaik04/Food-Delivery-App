@@ -3,29 +3,40 @@ import forge from "node-forge";
 import { successToast, errorToast } from "../../utils/toast.js";
 
 export default {
-  async signup(context, payload) {
+  async encryptPassword(_, password) {
     try {
-      const publicKeyPem = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsb1EMG1ehpIlRt3WgFvm
-NWZa98OtoFSeUyHgSeMxH3BBB5+cXWRowRtVm7sXnPgHqRAE6kJqNSVQvMAVIF63
-EHbcO30T17RogIPpGhEaBspX9ijFy3wXyT/9GEkpHC4rQZNZYhHEnjm4kxqoptKp
-uB8HUvhroAGRdCnRM6VJ4qivLdhhKd5Om1aKLM3Pex313zCBm9TQJC0Qpnrs7KBB
-sSxMcJk/FEPSrCqh5Vxt/+tXm8ZgSrSkBzFoZz4S6kSNCwCiGenxTnpNrZpOV4z3
-3u7s+Bv8hgVKVOMasLXt/lQ6fqjfxGxTshzmELpcWx4/Iey+bgERHUyhgLleZ8Xe
-xwIDAQAB
------END PUBLIC KEY-----`;
+      const res = await axios.get(
+        "http://192.1.200.113:3000/api/v1/auth/get-public-key-pem",
+        {
+          withCredentials: true,
+        }
+      );
 
       // Convert the PEM to a forge public key
-      const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
-      // Encrypt the message
-      payload.password = publicKey.encrypt(payload.password, "RSA-OAEP");
-      // Convert the encrypted data to base64
-      payload.password = forge.util.encode64(payload.password);
+      const publicKey = forge.pki.publicKeyFromPem(res.data.publicKeyPem);
 
-      console.log(payload.password);
+      // Encrypt the message
+      password = publicKey.encrypt(password, "RSA-OAEP");
+
+      // Convert the encrypted data to base64
+      password = forge.util.encode64(password);
+
+      return password;
+    } catch (error) {
+      setTimeout(() => {
+        errorToast(error);
+      }, 100);
+    }
+  },
+  async signup(context, payload) {
+    try {
+      payload.password = await context.dispatch(
+        "encryptPassword",
+        payload.password
+      );
 
       const res = await axios.post(
-        "http://192.168.1.7:3000/api/v1/users/signup",
+        "http://192.1.200.113:3000/api/v1/users/signup",
         payload,
         {
           withCredentials: true,
@@ -34,7 +45,7 @@ xwIDAQAB
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
       context.commit("setUser", res.data);
 
@@ -42,13 +53,18 @@ xwIDAQAB
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
   async login(context, payload) {
     try {
+      payload.password = await context.dispatch(
+        "encryptPassword",
+        payload.password
+      );
+
       const res = await axios.post(
-        "http://192.168.1.7:3000/api/v1/auth/login",
+        "http://192.1.200.113:3000/api/v1/auth/login",
         payload,
         {
           withCredentials: true,
@@ -57,34 +73,32 @@ xwIDAQAB
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
-      context.commit("setUser", res.data.data);
+      context.commit("setUser", res.data);
 
       return res;
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
   async getUserDetails(context) {
     try {
       const res = await axios.get(
-        "http://192.168.1.7:3000/api/v1/users/get-user",
+        "http://192.1.200.113:3000/api/v1/users/get-user",
         {
           withCredentials: true,
         }
       );
 
       context.commit("setUser", res.data);
-
-      return res;
     } catch (error) {
       console.log(error.response?.data?.message);
     }
   },
-  async changePassword(_, payload) {
+  async changePassword(context, payload) {
     try {
       if (payload.oldPassword === payload.newPassword)
         throw new Error("New Password and Old Password couldn't be same !!");
@@ -92,8 +106,13 @@ xwIDAQAB
       if (payload.newPassword !== payload.confirmPassword)
         throw new Error("New Password and Confirm Password must be same !!");
 
+      payload.newPassword = await context.dispatch(
+        "encryptPassword",
+        payload.newPassword
+      );
+
       const res = await axios.post(
-        `http://192.168.1.7:3000/api/v1/auth/change-password`,
+        `http://192.1.200.113:3000/api/v1/auth/change-password`,
         payload,
         {
           withCredentials: true,
@@ -102,19 +121,19 @@ xwIDAQAB
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
       return res;
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
   async forgotPassword(_, payload) {
     try {
       const res = await axios.post(
-        "http://192.168.1.7:3000/api/v1/auth/forgot-password",
+        "http://192.1.200.113:3000/api/v1/auth/forgot-password",
         payload.email,
         {
           withCredentials: true,
@@ -123,39 +142,44 @@ xwIDAQAB
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
       return res;
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
 
-  async resetPassword(_, payload) {
+  async resetPassword(context, payload) {
     try {
+      payload.newPassword = await context.dispatch(
+        "encryptPassword",
+        payload.newPassword
+      );
+
       const res = await axios.post(
-        `http://192.168.1.7:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
+        `http://192.1.200.113:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
         payload
       );
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
       return res;
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
 
   async logout(context) {
     try {
       const res = await axios.get(
-        "http://192.168.1.7:3000/api/v1/auth/logout",
+        "http://192.1.200.113:3000/api/v1/auth/logout",
         {
           withCredentials: true,
         }
@@ -163,7 +187,7 @@ xwIDAQAB
 
       setTimeout(() => {
         successToast(res);
-      }, 200);
+      }, 100);
 
       context.commit("removeUser");
 
@@ -171,7 +195,7 @@ xwIDAQAB
     } catch (error) {
       setTimeout(() => {
         errorToast(error);
-      }, 200);
+      }, 100);
     }
   },
 };

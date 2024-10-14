@@ -3,7 +3,7 @@
     <v-container>
       <v-row align="center">
         <v-toolbar-title class="nav-title">FooDelivery</v-toolbar-title>
-        <v-col class="nav-links d-none d-md-flex justify-end">
+        <v-col class="nav-links d-none d-lg-flex justify-end">
           <v-icon
             style="margin: 3px 14px 0 0"
             size="28"
@@ -60,7 +60,7 @@
           </div>
         </v-col>
 
-        <v-col class="d-flex d-md-none justify-end">
+        <v-col class="d-flex d-lg-none justify-end">
           <v-btn icon v-if="darkTheme">
             <v-icon style="margin-right: 10px" size="28" @click="toggleTheme"
               >mdi-weather-sunny</v-icon
@@ -100,6 +100,7 @@
                 </v-list-item>
                 <v-list-item>
                   <a
+                    style="cursor: pointer"
                     :class="darkTheme ? 'text-white' : 'text-black'"
                     @click="logout"
                     >Logout</a
@@ -146,6 +147,8 @@ export default {
   },
   created() {
     this.user = this.$store.getters.getUser;
+    console.log(23, this.user);
+
     this.darkTheme = this.$store.getters.isDark;
   },
   methods: {

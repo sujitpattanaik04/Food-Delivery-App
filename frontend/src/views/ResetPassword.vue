@@ -37,6 +37,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-lock"
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
               ></v-text-field>

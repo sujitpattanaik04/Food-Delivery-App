@@ -5,13 +5,25 @@ const {
   changePasswordService,
 } = require("./authService.js");
 const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
+const fs = require("fs");
+
+const getPublicKeyPem = asyncErrorHandler(async (req, res) => {
+  const publicKeyPem = fs.readFileSync("../backend/public_key.pem", "utf8");
+
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestedAt,
+    message: "Public Key Successfully Fetched",
+    publicKeyPem,
+  });
+});
 
 const loginUser = asyncErrorHandler(async (req, res) => {
   const { user, token } = await loginUserService(req.body);
 
   const options = {
     maxAge: process.env.LOGIN_EXPIRES_IN,
-    // httpOnly: true, // Prevent client-side access
+    httpOnly: true, // Prevent client-side access
     // secure: true, // Send cookie only over HTTPS
     // sameSite: "strict", // Adjust as needed for cross-site scenarios
   };
@@ -22,7 +34,7 @@ const loginUser = asyncErrorHandler(async (req, res) => {
     status: "success",
     requestedAt: req.requestedAt,
     message: "You have logged in successfully",
-    data: { user, token },
+    user,
   });
 });
 
@@ -71,4 +83,5 @@ module.exports = {
   resetPassword,
   changePassword,
   logoutUser,
+  getPublicKeyPem,
 };

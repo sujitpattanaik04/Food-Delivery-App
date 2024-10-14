@@ -17,19 +17,6 @@
             >
             <v-form v-model="isFormValid" class="px-10">
               <v-text-field
-                v-model="NewPassword"
-                :rules="passwordRules"
-                :type="showNewPassword ? 'text' : 'password'"
-                label="New Password*"
-                variant="outlined"
-                class="mb-2"
-                color="#609966"
-                required
-                :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append-inner="showNewPassword = !showNewPassword"
-              ></v-text-field>
-
-              <v-text-field
                 v-model="oldPassword"
                 :rules="passwordRules"
                 :type="showOldPassword ? 'text' : 'password'"
@@ -38,12 +25,27 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-lock"
                 :append-inner-icon="showOldPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showOldPassword = !showOldPassword"
               ></v-text-field>
 
               <v-text-field
-                v-model="ConfirmPassword"
+                v-model="newPassword"
+                :rules="passwordRules"
+                :type="showNewPassword ? 'text' : 'password'"
+                label="New Password*"
+                variant="outlined"
+                class="mb-2"
+                color="#609966"
+                required
+                prepend-inner-icon="mdi-lock"
+                :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                @click:append-inner="showNewPassword = !showNewPassword"
+              ></v-text-field>
+
+              <v-text-field
+                v-model="confirmPassword"
                 :rules="passwordRules"
                 :type="showConfirmPassword ? 'text' : 'password'"
                 label="Confirm Password*"
@@ -51,6 +53,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-lock"
                 :append-inner-icon="
                   showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'
                 "

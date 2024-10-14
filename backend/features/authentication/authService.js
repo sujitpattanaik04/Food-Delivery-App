@@ -8,10 +8,14 @@ const signToken = require("../../utils/signToken.js");
 const sendEmail = require("../../utils/gmail.js");
 const CustomError = require("../../utils/customError.js");
 const crypto = require("crypto");
+const decryptPassword = require("../../utils/decryptPassword.js");
 
 const loginUserService = async (userData) => {
   let { email, password, role } = userData;
 
+  password = decryptPassword(password);
+
+  //FINDING EXISTING ROLE FROM ROLE TABLE
   role = await fetchRole(role);
 
   const user = await fetchUserByEmail(email);
@@ -45,7 +49,7 @@ const forgotPasswordService = async (req) => {
 
   await user.save();
 
-  const resetUrl = `http://192.168.1.7:8080/reset-password/${resetToken}`;
+  const resetUrl = `http://192.1.200.113:8080/reset-password/${resetToken}`;
 
   const html = `<pre>Hello ${user.email},\n      We have received a password reset request. Please use given link to reset your password. Which is valid only for 10 minutes. <a href=${resetUrl}>Password Reset Link</a> </pre>  `;
 
@@ -71,6 +75,8 @@ const forgotPasswordService = async (req) => {
 const resetPasswordService = async (req) => {
   const { newPassword } = req.body;
 
+  newPassword = decryptPassword(newPassword);
+
   const token = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -91,8 +97,10 @@ const resetPasswordService = async (req) => {
 };
 
 const changePasswordService = async (req) => {
-  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const { oldPassword, newPassword } = req.body;
   const user = req.user;
+
+  newPassword = decryptPassword(newPassword);
 
   const isPasswordValid = await user.comparePassword(
     oldPassword,
