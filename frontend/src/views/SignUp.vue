@@ -23,6 +23,7 @@
                 color="#609966"
                 variant="outlined"
                 class="mb-2"
+                prepend-inner-icon="mdi-account"
                 required
               ></v-text-field>
 
@@ -35,6 +36,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-phone"
                 @input="filterPhoneNumber"
               ></v-text-field>
 
@@ -46,6 +48,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-email"
               ></v-text-field>
 
               <v-text-field
@@ -57,9 +60,22 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-lock"
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
               ></v-text-field>
+
+              <v-date-input
+                v-model="dob"
+                label="Select DOB*"
+                variant="outlined"
+                prepend-icon=""
+                prepend-inner-icon="mdi-calendar"
+                required
+                :rules="[(v) => !!v || 'Date of Birth is a required field']"
+                :max="new Date().toISOString().slice(0, 10)"
+                class="mb-2"
+              ></v-date-input>
 
               <v-select
                 v-model="role"
@@ -70,18 +86,12 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-card-account-details"
               ></v-select>
-
-              <v-checkbox
-                v-model="checkbox"
-                label="I agree to FooDelivery's Terms of Service."
-                class="mt-n6"
-                required
-              ></v-checkbox>
 
               <div class="d-flex justify-center">
                 <v-btn
-                  class="custom-btn b-6"
+                  class="custom-btn mt-4"
                   width="250"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
@@ -108,7 +118,12 @@
 </template>
 
 <script>
+import { VDateInput } from "vuetify/labs/VDateInput";
+
 export default {
+  components: {
+    VDateInput,
+  },
   data: () => ({
     fullname: null,
     fullnameRules: [
@@ -140,6 +155,7 @@ export default {
           )) ||
         "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase",
     ],
+    dob: null,
     role: null,
     roles: ["Admin", "Customer", "Delivery Partner", "Restaurant Owner"],
     showPassword: false,
@@ -153,6 +169,10 @@ export default {
       this.phone = value;
     },
     async handleSubmit() {
+      this.dob = this.dob.toLocaleDateString();
+
+      console.log(this.dob);
+
       const payload = {
         fullname: this.fullname,
         email: this.email,

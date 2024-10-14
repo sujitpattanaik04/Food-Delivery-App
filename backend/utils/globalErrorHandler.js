@@ -20,6 +20,7 @@ const sendProdErrors = (req, res, error) => {
       status: "error",
       requestedAt: req.requestedAt,
       message: "Something went wrong! Please try again later.",
+      // message: error.message,
     });
   }
 };

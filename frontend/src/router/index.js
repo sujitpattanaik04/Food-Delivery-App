@@ -40,30 +40,14 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  // const isLoggedIn = store.state.isLoggedIn;
-
-  // if (!isLoggedIn) {
-  //   await store.dispatch("getUserDetails");
-  // }
-  // if (isLoggedIn && !to.meta.login) {
-  //   return next("/dashboard");
-  // } else if (!isLoggedIn && to.meta.login) {
-  //   return next("/login");
-  // } else {
-  //   next();
-  // }
-
-  console.log(store.state.auth.isLoggedIn);
-
   if (!store.state.auth.isLoggedIn) {
     await store.dispatch("getUserDetails");
   }
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.state.auth.user) {
-      next();
-    } else {
-      next("/login");
-    }
+
+  if (store.state.auth.isLoggedIn && !to.meta.login) {
+    return next("/dashboard");
+  } else if (!store.state.auth.isLoggedIn && to.meta.login) {
+    return next("/login");
   } else {
     next();
   }

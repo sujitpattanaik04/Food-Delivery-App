@@ -1,3 +1,5 @@
+const CustomError = require("./customError.js");
+
 const validatePassword = (password) => {
   const minLength = 8;
   const hasUpperCase = /[A-Z]/.test(password);
@@ -14,7 +16,7 @@ const validatePassword = (password) => {
     !hasNumber ||
     !hasSpecialChar
   ) {
-    throw new Error(msg);
+    throw new CustomError(msg, 400);
   } else {
     return true;
   }

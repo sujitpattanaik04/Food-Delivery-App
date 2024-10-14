@@ -1,8 +1,3 @@
-// const dotenv = require("dotenv");
-
-// ADD Everything to process.env
-// dotenv.config({ path: "./config.env" });
-
 const connection = require("./models/connection.js");
 
 // CONNECT TO DATABASE

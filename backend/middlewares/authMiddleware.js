@@ -20,7 +20,7 @@ const protect = async (req, res, next) => {
     // 2. Validate the token
     const decodedToken = jwt.verify(token, process.env.SECRET_STR);
 
-    const user = await User.findByPk(decodedToken.id);
+    const user = await User.findByPk(decodedToken.uuid);
 
     if (!user) {
       throw new Error("User with the given credential does not exist !!");

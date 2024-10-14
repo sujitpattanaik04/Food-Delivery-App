@@ -36,6 +36,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-email"
               ></v-text-field>
 
               <v-text-field
@@ -47,6 +48,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-lock"
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
               ></v-text-field>
@@ -60,6 +62,7 @@
                 class="mb-2"
                 color="#609966"
                 required
+                prepend-inner-icon="mdi-card-account-details"
               ></v-select>
 
               <div class="mt-n6 mb-8" style="text-align: right">
@@ -83,7 +86,7 @@
               </div>
 
               <div class="text-center my-4">
-                Not a member?
+                New to FooDelivery?
                 <router-link
                   to="/signup"
                   class="custom-link"
@@ -141,11 +144,38 @@ export default {
       };
 
       const res = await this.$store.dispatch("login", payload);
+      console.log(res.data.status);
 
-      if (res?.data?.status === "success") this.$router.replace("/dashboard");
+      if (res?.data?.status === "success") {
+        this.$router.replace("/dashboard");
+      }
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style>
+/* .v-input__details {
+  padding-inline: 5px !important;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+} */
+
+.v-input__details {
+  align-items: flex-start;
+  display: flex;
+  font-size: 0.75rem;
+  font-weight: 400;
+  grid-area: messages;
+  line-height: normal;
+  min-height: 22px;
+  padding-top: 6px;
+  overflow: hidden;
+  justify-content: space-between;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+</style>

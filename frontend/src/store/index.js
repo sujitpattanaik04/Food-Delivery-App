@@ -8,7 +8,7 @@ const store = createStore({
   },
   state() {
     return {
-      darkTheme: true,
+      darkTheme: false,
     };
   },
   getters: {

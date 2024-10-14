@@ -6,6 +6,7 @@ const {
   logoutUser,
   sendOtp,
   loginByOtp,
+  getPublicKeyPem,
 } = require("./authController.js");
 const authMiddleware = require("../../middlewares/authMiddleware.js");
 const express = require("express");
@@ -19,5 +20,6 @@ router.route("/change-password").post(authMiddleware, changePassword);
 router.route("/logout").get(authMiddleware, logoutUser);
 router.route("/send-OTP").post(sendOtp);
 router.route("/login-by-OTP").post(loginByOtp);
+router.route("/get-public-key-pem").get(getPublicKeyPem);
 
 module.exports = router;
