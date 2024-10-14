@@ -41,9 +41,18 @@ const fetchUserByResetToken = async (token) => {
   });
 };
 
+const fetchUserByPhone = async (phone) => {
+  return await User.findOne({
+    where: {
+      phone,
+    },
+  });
+};
+
 module.exports = {
   fetchRole,
   fetchUserByEmail,
   fetchUserRole,
   fetchUserByResetToken,
+  fetchUserByPhone,
 };

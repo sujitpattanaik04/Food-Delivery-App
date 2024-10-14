@@ -3,14 +3,17 @@ const {
   fetchUserByEmail,
   fetchUserRole,
   fetchUserByResetToken,
+  fetchUserByPhone,
 } = require("./authRepository.js");
 const signToken = require("../../utils/signToken.js");
-const sendEmail = require("../../utils/gmail.js");
+const sendEmail = require("../../utils/sendEmail.js");
 const CustomError = require("../../utils/customError.js");
 const crypto = require("crypto");
+const sendSMS = require("../../utils/sendSMS.js");
+const { generateOtp, validateOtp } = require("../../utils/Otp.js");
 
-const loginUserService = async (userData) => {
-  let { email, password, role } = userData;
+const loginUserService = async (req) => {
+  let { email, password, role } = req.body;
 
   role = await fetchRole(role);
 
@@ -28,6 +31,38 @@ const loginUserService = async (userData) => {
 
   if (!userRole)
     throw new CustomError("You have entered incorrect role !!", 401);
+
+  const token = signToken(user.uuid);
+
+  return { user, token };
+};
+
+const loginByOtpService = async (req) => {
+  let { phone, role, otp } = req.body;
+
+  role = await fetchRole(role);
+
+  const user = await fetchUserByPhone(phone);
+
+  if (!user)
+    throw new CustomError(
+      "User with the given phone number couldn't found !!",
+      404
+    );
+
+  const userRole = await fetchUserRole(user, role);
+
+  if (!userRole)
+    throw new CustomError("You have entered incorrect role !!", 401);
+
+  const result = validateOtp(otp, user.otp, user.otpExpiryTime);
+
+  if (!result.isValid) throw new CustomError(result.message, 401);
+
+  user.otp = null;
+  user.otpExpiryTime = null;
+
+  user.save();
 
   const token = signToken(user.uuid);
 
@@ -61,8 +96,7 @@ const forgotPasswordService = async (req) => {
     user.passwordResetTokenExpires = undefined;
     user.save();
 
-    if (!user)
-      throw new CustomError("Something went wrong in sending mail !!", 400);
+    throw new CustomError("Something went wrong in sending mail !!", 400);
   }
 
   return;
@@ -110,9 +144,47 @@ const changePasswordService = async (req) => {
   await user.save();
 };
 
+const sendOtpService = async (req) => {
+  let { phone, role } = req.body;
+
+  role = await fetchRole(role);
+
+  const user = await fetchUserByPhone(phone);
+
+  if (!user)
+    throw new CustomError(
+      "User with the given phone number couldn't found !!",
+      404
+    );
+
+  const userRole = await fetchUserRole(user, role);
+
+  if (!userRole)
+    throw new CustomError("You have entered incorrect role !!", 401);
+
+  const { otp, expiryTime } = generateOtp();
+
+  const body = `Dear ${user.fullname}, Your one time password (OTP) for verifying your account is: ${otp}. Please enter this code within the next 10 minutes to complete your verification.
+         If you did not request this OTP, please ignore this message.`;
+
+  try {
+    user.otp = otp;
+    user.otpExpiryTime = expiryTime;
+
+    sendSMS(body);
+  } catch (error) {
+    throw new CustomError("Something went wrong in sending OTP !!", 400);
+  }
+  user.save();
+
+  return;
+};
+
 module.exports = {
   loginUserService,
   forgotPasswordService,
   resetPasswordService,
   changePasswordService,
+  sendOtpService,
+  loginByOtpService,
 };

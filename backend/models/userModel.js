@@ -48,6 +48,18 @@ module.exports = (connectDB) => {
           },
         },
       },
+      dob: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      otp: {
+        type: DataTypes.STRING(6),
+        allowNull: true,
+      },
+      otpExpiryTime: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       passwordResetToken: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -67,11 +79,6 @@ module.exports = (connectDB) => {
       timestamps: true,
       paranoid: true,
       hooks: {
-        // beforeValidate: async (user) => {
-        //   console.log(user.password);
-        //   validatePassword(user.password);
-        //   console.log(78);
-        // },
         beforeCreate: async (user) => {
           validatePassword(user.password);
           user.password = await bcrypt.hash(user.password, 10);
