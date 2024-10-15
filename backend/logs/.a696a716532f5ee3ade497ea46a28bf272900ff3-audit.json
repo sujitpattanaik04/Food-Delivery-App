@@ -94,6 +94,11 @@
             "date": 1728937159403,
             "name": "logs\\winston-2024-10-15.log",
             "hash": "9a9ab8abfda0f4b1a1555b25b54c7f0e122b82a249732c39ff57fb6c97504cf6"
+        },
+        {
+            "date": 1728965884026,
+            "name": "logs/winston-2024-10-15.log",
+            "hash": "41d339f9c0c3427261d561e669637b37ecb7314d01b63cad42b607b2da028e64"
         }
     ],
     "hashType": "sha256"

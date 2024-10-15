@@ -13,13 +13,15 @@ export default {
       );
 
       // Convert the PEM to a forge public key
-      const publicKey = forge.pki.publicKeyFromPem(res.data.publicKeyPem);
+      const publicKey = forge.pki.publicKeyFromPem(res.data.data);
 
       // Encrypt the message
       password = publicKey.encrypt(password, "RSA-OAEP");
 
       // Convert the encrypted data to base64
       password = forge.util.encode64(password);
+
+      console.log(password);
 
       return password;
     } catch (error) {
@@ -47,7 +49,7 @@ export default {
         successToast(res);
       }, 100);
 
-      context.commit("setUser", res.data);
+      context.commit("setUser", res.data.data);
 
       return res;
     } catch (error) {
@@ -75,7 +77,7 @@ export default {
         successToast(res);
       }, 100);
 
-      context.commit("setUser", res.data);
+      context.commit("setUser", res.data.data);
 
       return res;
     } catch (error) {
@@ -93,7 +95,7 @@ export default {
         }
       );
 
-      context.commit("setUser", res.data);
+      context.commit("setUser", res.data.data);
     } catch (error) {
       console.log(error.response?.data?.message);
     }
@@ -134,7 +136,7 @@ export default {
     try {
       const res = await axios.post(
         "http://192.1.200.113:3000/api/v1/auth/forgot-password",
-        payload.email,
+        payload,
         {
           withCredentials: true,
         }
@@ -160,7 +162,7 @@ export default {
       );
 
       const res = await axios.post(
-        `http://192.1.200.113:3000/api/v1/auth/reset-password/${this.$route.params.token}`,
+        `http://192.1.200.113:3000/api/v1/auth/reset-password/${payload.token}`,
         payload
       );
 

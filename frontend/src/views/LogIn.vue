@@ -41,7 +41,7 @@
 
               <v-text-field
                 v-model="password"
-                :rules="passwordRules"
+                :rules="[(v) => !!v || 'Password is required']"
                 :type="showPassword ? 'text' : 'password'"
                 label="Password*"
                 variant="outlined"
@@ -78,7 +78,7 @@
               <div class="d-flex justify-center">
                 <v-btn
                   class="custom-btn b-6"
-                  width="250"
+                  width="280"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
                   >Login</v-btn
@@ -115,15 +115,6 @@ export default {
           "Please enter a valid email",
       ],
       password: null,
-      passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) =>
-          (v &&
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-              v
-            )) ||
-          "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase",
-      ],
       role: null,
       roles: ["Admin", "Customer", "Delivery Partner", "Restaurant Owner"],
       showPassword: false,
@@ -144,7 +135,6 @@ export default {
       };
 
       const res = await this.$store.dispatch("login", payload);
-      console.log(res.data.status);
 
       if (res?.data?.status === "success") {
         this.$router.replace("/dashboard");

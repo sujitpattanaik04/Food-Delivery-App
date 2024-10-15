@@ -13,8 +13,8 @@ const sendSMS = require("../../utils/sendSMS.js");
 const { generateOtp, validateOtp } = require("../../utils/Otp.js");
 const decryptPassword = require("../../utils/decryptPassword.js");
 
-const loginUserService = async (userData) => {
-  let { email, password, role } = userData;
+const loginUserService = async (req) => {
+  let { email, password, role } = req.body;
 
   password = decryptPassword(password);
 
@@ -76,6 +76,8 @@ const loginByOtpService = async (req) => {
 const forgotPasswordService = async (req) => {
   const { email } = req.body;
 
+  console.log(email);
+
   const user = await fetchUserByEmail(email);
 
   if (!user) throw new CustomError("User the given email is not found !!", 404);
@@ -107,7 +109,7 @@ const forgotPasswordService = async (req) => {
 };
 
 const resetPasswordService = async (req) => {
-  const { newPassword } = req.body;
+  let { newPassword } = req.body;
 
   newPassword = decryptPassword(newPassword);
 
@@ -115,6 +117,8 @@ const resetPasswordService = async (req) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
+
+  console.log(22, req.params);
 
   const user = await fetchUserByResetToken(token);
 
@@ -131,7 +135,7 @@ const resetPasswordService = async (req) => {
 };
 
 const changePasswordService = async (req) => {
-  const { oldPassword, newPassword } = req.body;
+  let { oldPassword, newPassword } = req.body;
   const user = req.user;
 
   newPassword = decryptPassword(newPassword);

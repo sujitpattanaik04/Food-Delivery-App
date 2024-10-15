@@ -1,6 +1,6 @@
 export default {
-  setUser(state, payload) {
-    state.user = payload.user;
+  setUser(state, user) {
+    state.user = user;
     state.isLoggedIn = true;
   },
   removeUser(state) {

@@ -67,12 +67,12 @@
 
               <v-date-input
                 v-model="dob"
-                label="Select DOB*"
+                label="Date of Birth*"
                 variant="outlined"
                 prepend-icon=""
                 prepend-inner-icon="mdi-calendar"
                 required
-                :rules="[(v) => !!v || 'Date of Birth is a required field']"
+                :rules="dobRules"
                 :max="new Date().toISOString().slice(0, 10)"
                 class="mb-2"
               ></v-date-input>
@@ -92,7 +92,7 @@
               <div class="d-flex justify-center">
                 <v-btn
                   class="custom-btn mt-4"
-                  width="250"
+                  width="280"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
                   >Register</v-btn
@@ -156,22 +156,28 @@ export default {
         "Password must be at least 8 characters and must include Digit, Special Character, Uppercase and Lowercase",
     ],
     dob: null,
+    dobRules: [
+      (v) => !!v || "Date of Birth is a required field",
+      (v) => {
+        const age = Math.floor(
+          (Date.now() - new Date(v).getTime()) / (1000 * 60 * 60 * 24 * 365.25)
+        );
+        return age >= 16 || "Age must be at least 16 to create an account";
+      },
+    ],
     role: null,
     roles: ["Admin", "Customer", "Delivery Partner", "Restaurant Owner"],
     showPassword: false,
     isFormValid: false,
     checkbox: false,
   }),
-
   methods: {
     filterPhoneNumber(event) {
       const value = event.target.value.replace(/\D/g, "");
       this.phone = value;
     },
     async handleSubmit() {
-      this.dob = this.dob.toLocaleDateString();
-
-      console.log(this.dob);
+      const dobString = this.dob.toLocaleDateString();
 
       const payload = {
         fullname: this.fullname,
@@ -179,6 +185,7 @@ export default {
         phone: this.phone,
         password: this.password,
         role: this.role,
+        dob: dobString,
       };
 
       const res = await this.$store.dispatch("signup", payload);

@@ -1,7 +1,7 @@
 <template>
-  <v-main>
-    <the-header></the-header>
-    <h2>Hello {{ firstname }} ! How's it going?</h2>
+  <the-header></the-header>
+  <v-main class="d-flex justify-center align-center flex-column">
+    <h1 style="color: chocolate">Hello {{ firstname }} ! How's it going?</h1>
   </v-main>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   },
   created() {
     const user = this.$store.getters.getUser;
-    if (!user) this.$router.replace("/signup");
+    if (!user) this.$router.replace("/login");
     this.firstname = user ? user.fullname.split(" ")[0] : null;
   },
 };

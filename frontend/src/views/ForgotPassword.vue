@@ -55,7 +55,7 @@
               <div class="d-flex justify-center">
                 <v-btn
                   class="custom-btn mb-5"
-                  width="250"
+                  width="280"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
                   >Send Password Reset Request</v-btn
@@ -90,6 +90,9 @@ export default {
       };
 
       await this.$store.dispatch("forgotPassword", payload);
+
+      this.email = null;
+      this.isFormValid = false;
     },
   },
 };

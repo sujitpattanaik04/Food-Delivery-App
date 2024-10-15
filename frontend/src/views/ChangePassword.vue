@@ -63,7 +63,7 @@
               <div class="d-flex justify-center">
                 <v-btn
                   class="custom-btn mb-5"
-                  width="250"
+                  width="280"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
                   >Change Password</v-btn
@@ -109,7 +109,7 @@ export default {
 
       const res = await this.$store.dispatch("changePassword", payload);
 
-      if (res?.status === "success") {
+      if (res?.data?.status === "success") {
         this.$router.replace("/dashboard");
       }
     },

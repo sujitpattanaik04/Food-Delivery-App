@@ -8,16 +8,15 @@ const {
 } = require("./authService.js");
 const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
 const fs = require("fs");
+const sendResponse = require("../../utils/sendResponse.js");
+let msg;
 
 const getPublicKeyPem = asyncErrorHandler(async (req, res) => {
   const publicKeyPem = fs.readFileSync("../backend/public_key.pem", "utf8");
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "Public Key Successfully Fetched",
-    publicKeyPem,
-  });
+  msg = "PublicKeyPem Sent Successfully";
+
+  sendResponse(200, req, res, msg, publicKeyPem);
 });
 
 const loginUser = asyncErrorHandler(async (req, res) => {
@@ -32,61 +31,49 @@ const loginUser = asyncErrorHandler(async (req, res) => {
 
   res.cookie("authToken", token, options);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "You have logged in successfully",
-    user,
-  });
+  msg = "You have logged in successfully";
+
+  sendResponse(200, req, res, msg, user);
 });
 
 const forgotPassword = asyncErrorHandler(async (req, res) => {
   await forgotPasswordService(req);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "Password reset link was sent to the your email successfully",
-  });
+  msg = "Password reset link was sent to the your email successfully";
+
+  sendResponse(200, req, res, msg);
 });
 
 const resetPassword = asyncErrorHandler(async (req, res) => {
   await resetPasswordService(req);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "Password reset successfully",
-  });
+  msg = "Password reset successfully";
+
+  sendResponse(200, req, res, msg);
 });
 
 const changePassword = asyncErrorHandler(async (req, res) => {
   await changePasswordService(req);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "Password changed successfully",
-  });
+  msg = "Password changed successfully";
+
+  sendResponse(200, req, res, msg);
 });
 
 const logoutUser = asyncErrorHandler(async (req, res) => {
   res.clearCookie("authToken");
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "Logout successfully",
-  });
+
+  msg = "Logout successfully";
+
+  sendResponse(200, req, res, msg);
 });
 
 const sendOtp = asyncErrorHandler(async (req, res) => {
   await sendOtpService(req);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "OTP is successfully sent to your mobile number.",
-  });
+  msg = "OTP is successfully sent to your mobile number.";
+
+  sendResponse(200, req, res, msg);
 });
 
 const loginByOtp = asyncErrorHandler(async (req, res) => {
@@ -101,12 +88,9 @@ const loginByOtp = asyncErrorHandler(async (req, res) => {
 
   res.cookie("authToken", token, options);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "You have logged in successfully",
-    user,
-  });
+  msg = "You have logged in successfully";
+
+  sendResponse(200, req, res, msg, user);
 });
 
 module.exports = {

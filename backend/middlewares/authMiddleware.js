@@ -8,10 +8,10 @@ const protect = async (req, res, next) => {
     // 1. Read the token and check if it exists
 
     //FOR POSTMAN
-    const token = req.headers.cookie?.split("=")[1];
+    // const token = req.headers.cookie?.split("=")[1];
 
     //FOR BROWSER
-    // const token = req.cookies.authToken;
+    const token = req.cookies.authToken;
 
     if (!token) {
       throw new Error("You are not logged in !!");

@@ -45,7 +45,7 @@
               <div class="d-flex justify-center">
                 <v-btn
                   class="custom-btn mb-5"
-                  width="250"
+                  width="280"
                   @click="handleSubmit"
                   :disabled="!isFormValid"
                   >Reset Password</v-btn
@@ -79,8 +79,10 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      const token = this.$route.params.token;
       const payload = {
         newPassword: this.password,
+        token,
       };
 
       const res = await this.$store.dispatch("resetPassword", payload);

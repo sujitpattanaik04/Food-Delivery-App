@@ -19,8 +19,8 @@ const sendProdErrors = (req, res, error) => {
     res.status(500).json({
       status: "error",
       requestedAt: req.requestedAt,
-      message: "Something went wrong! Please try again later.",
-      // message: error.message,
+      // message: "Something went wrong! Please try again later.",
+      message: error.message,
     });
   }
 };

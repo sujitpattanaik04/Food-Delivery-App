@@ -147,7 +147,6 @@ export default {
   },
   created() {
     this.user = this.$store.getters.getUser;
-    console.log(23, this.user);
 
     this.darkTheme = this.$store.getters.isDark;
   },

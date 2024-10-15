@@ -19,7 +19,7 @@ module.exports = (connectDB) => {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Username cannot be empty!",
+            msg: "Fullname cannot be empty!",
           },
         },
       },
@@ -49,7 +49,7 @@ module.exports = (connectDB) => {
         },
       },
       dob: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       otp: {

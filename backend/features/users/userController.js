@@ -1,5 +1,7 @@
 const { registerUserService, deleteUserService } = require("./userService.js");
 const asyncErrorHandler = require("../../utils/asyncErrorHandler.js");
+const sendResponse = require("../../utils/sendResponse.js");
+let msg;
 
 const registerUser = asyncErrorHandler(async (req, res) => {
   const { user, token } = await registerUserService(req.body);
@@ -19,31 +21,22 @@ const registerUser = asyncErrorHandler(async (req, res) => {
 
   res.cookie("authToken", token, options);
 
-  res.status(201).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    message: "User created successfully!",
-    user,
-  });
+  msg = "User created successfully!";
+
+  sendResponse(200, req, res, msg, user);
 });
 
 const getUserDetails = asyncErrorHandler(async (req, res) => {
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    user: req.user,
-  });
+  sendResponse(200, req, res, _, req.user);
 });
 
 const deleteUser = asyncErrorHandler(async (req, res) => {
   const { userId } = req.params;
   const user = await deleteUserService(userId);
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestedAt,
-    user,
-  });
+  msg = "User created successfully!";
+
+  sendResponse(200, req, res, _, user);
 });
 
 module.exports = { registerUser, deleteUser, getUserDetails };
